@@ -7,9 +7,6 @@ public class MainActivity extends AppCompatActivity {
   // Teach 07 Part II: Comment #1 -- kkingdon -- great comment!
   // Teach 07 Part III: Conflict #1 -- kkingdon
   // Teach 07 Part II: Comment #2 -- tanichols -- edited
-  // Teach 07 Part II: Comment #3 -- jvehikite
-  // Teach 07 Part II: Comment #1 -- kkingdon
-  // Teach 07 Part II: Comment #2 -- tanichols
   // Teach 07 Part II: Conflict #3 -- jvehikite
 
   @Override
