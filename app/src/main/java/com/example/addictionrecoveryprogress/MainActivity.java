@@ -4,8 +4,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 public class MainActivity extends AppCompatActivity {
-  // Teach 07 Part III: Conflict #2 -- kkingdon -- great comment!
-  // Teach 07 Part II: Comment #2 -- tanichols
+  // Teach 07 Part III: Conflict #3 -- kkingdon -- great comment!
+  // Teach 07 Part II: Comment #2 -- tanichols -- edited
   // Teach 07 Part II: Comment #3 -- jvehikite
 
   @Override
