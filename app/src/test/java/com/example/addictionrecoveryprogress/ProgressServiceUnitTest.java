@@ -26,7 +26,7 @@ public class ProgressServiceUnitTest implements Observer {
         break;
       }
     }
-    assertEquals(_ready, true);
+    assertEquals(true, _ready);
     ProgressRecord otherRecord = service.getRecord();
     assertEquals(record.getDate(), otherRecord.getDate());
   }
