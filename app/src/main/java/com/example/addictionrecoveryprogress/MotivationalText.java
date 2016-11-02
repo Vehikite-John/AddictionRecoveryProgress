@@ -15,7 +15,7 @@ public class MotivationalText {
     }
 
     public boolean isBuiltIn() {
-        return false;
+        return _isBuiltIn;
     }
 
     public MotivationalText(String _text, boolean _isBuiltIn) {

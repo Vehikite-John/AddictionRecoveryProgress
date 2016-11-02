@@ -2,14 +2,14 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_main"
+    android:id="@+id/activity_view_record"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.addictionrecoveryprogress.MainActivity">
+    tools:context="com.example.addictionrecoveryprogress.ViewRecordActivity">
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/button_switch_to_view"
-        android:onClick="startView" />
+        android:text="@string/button_switch_to_add"
+        android:onClick="startAdd" />
 </RelativeLayout>
