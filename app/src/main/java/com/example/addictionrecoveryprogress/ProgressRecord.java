@@ -22,7 +22,9 @@ class ProgressRecord {
   }
 
   enum Location {
-    HOME,
+    HOME_BEDROOM,
+    HOME_BATHROOM,
+    HOME_OFFICE,
     WORK,
     TRANSPORTATION,
     ACCOMODATION
