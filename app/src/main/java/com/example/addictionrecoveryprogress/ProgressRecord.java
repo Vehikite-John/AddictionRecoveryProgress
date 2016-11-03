@@ -1,12 +1,12 @@
 package com.example.addictionrecoveryprogress;
 
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 
 /**
  * The record of one day's addiction-recovery progress
  */
 class ProgressRecord {
+  private long _id;
   private Calendar _date;
   private boolean _victory;
   private Mood _mood;
@@ -38,26 +38,9 @@ class ProgressRecord {
   }
 
   /**
-   * Default progress record constructor. Initializes date to yesterday.
+   * Default constructor
    */
   ProgressRecord() {
-    this(GregorianCalendar.getInstance());
-    _date.add(Calendar.DATE, -1);
-  }
-
-  /**
-   * Constructs progress record for a specific date.
-   *
-   * @param date the date of the progress record.
-   */
-  ProgressRecord(Calendar date) {
-    _date = date;
-
-    // ensure date is rounded down to start of day.
-    _date.set(Calendar.HOUR_OF_DAY, 0);
-    _date.set(Calendar.MINUTE, 0);
-    _date.set(Calendar.SECOND, 0);
-    _date.set(Calendar.MILLISECOND, 0);
   }
 
   /**
@@ -139,6 +122,24 @@ class ProgressRecord {
    */
   Calendar getDate() {
     return _date;
+  }
+
+  void setDate(Calendar date) {
+    _date = date;
+
+    // ensure date is rounded down to start of day.
+    _date.set(Calendar.HOUR_OF_DAY, 0);
+    _date.set(Calendar.MINUTE, 0);
+    _date.set(Calendar.SECOND, 0);
+    _date.set(Calendar.MILLISECOND, 0);
+  }
+
+  long getId() {
+    return _id;
+  }
+
+  void setId(long id) {
+    _id = id;
   }
 
 }

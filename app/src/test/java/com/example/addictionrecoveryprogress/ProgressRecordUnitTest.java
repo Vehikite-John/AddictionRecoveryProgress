@@ -13,7 +13,8 @@ import static org.junit.Assert.assertEquals;
 public class ProgressRecordUnitTest {
   @Test
   public void testSetVictory() throws Exception {
-    ProgressRecord pr = new ProgressRecord(new GregorianCalendar());
+    ProgressRecord pr = new ProgressRecord();
+    pr.setDate(new GregorianCalendar());
 
     pr.setVictory(true);
     assertEquals(pr.isVictory(), true);
@@ -24,7 +25,8 @@ public class ProgressRecordUnitTest {
 
   @Test
   public void testSetMood() throws Exception {
-    ProgressRecord pr = new ProgressRecord(new GregorianCalendar());
+    ProgressRecord pr = new ProgressRecord();
+    pr.setDate(new GregorianCalendar());
 
     for (ProgressRecord.Mood mood : ProgressRecord.Mood.values()) {
       pr.setMood(mood);
@@ -34,7 +36,8 @@ public class ProgressRecordUnitTest {
 
   @Test
   public void testSetLocation() throws Exception {
-    ProgressRecord pr = new ProgressRecord(new GregorianCalendar());
+    ProgressRecord pr = new ProgressRecord();
+    pr.setDate(new GregorianCalendar());
 
     for (ProgressRecord.Location location : ProgressRecord.Location.values()) {
       pr.setLocation(location);
@@ -44,7 +47,8 @@ public class ProgressRecordUnitTest {
 
   @Test
   public void testSetTimePeriod() throws Exception {
-    ProgressRecord pr = new ProgressRecord(new GregorianCalendar());
+    ProgressRecord pr = new ProgressRecord();
+    pr.setDate(new GregorianCalendar());
 
     for (ProgressRecord.TimePeriod period : ProgressRecord.TimePeriod.values()) {
       pr.setTimePeriod(period);
@@ -55,7 +59,8 @@ public class ProgressRecordUnitTest {
   @Test
   public void testGetDate() throws Exception {
     Calendar date = new GregorianCalendar();
-    ProgressRecord pr = new ProgressRecord(date);
+    ProgressRecord pr = new ProgressRecord();
+    pr.setDate(date);
 
     // Ensure that only the year, month and day are set; other fields are set to zero.
     assertEquals(pr.getDate().get(Calendar.YEAR), date.get(Calendar.YEAR));
@@ -66,10 +71,5 @@ public class ProgressRecordUnitTest {
     assertEquals(pr.getDate().get(Calendar.MINUTE), 0);
     assertEquals(pr.getDate().get(Calendar.SECOND), 0);
     assertEquals(pr.getDate().get(Calendar.MILLISECOND), 0);
-
-    // verify that default constructor returns yesterday's date
-    date.add(Calendar.DATE, -1);
-    pr = new ProgressRecord();
-    assertEquals(pr.getDate().get(Calendar.DATE), date.get(Calendar.DATE));
   }
 }
