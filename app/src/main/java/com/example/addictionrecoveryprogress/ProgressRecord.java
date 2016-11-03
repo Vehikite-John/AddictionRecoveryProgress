@@ -1,5 +1,6 @@
 package com.example.addictionrecoveryprogress;
 
+import java.text.DateFormat;
 import java.util.Calendar;
 
 /**
@@ -41,6 +42,18 @@ class ProgressRecord {
    * Default constructor
    */
   ProgressRecord() {
+  }
+
+  /**
+   * Non-Default constructor
+   */
+  ProgressRecord(long recordID, Calendar date, boolean victory, Mood mood, Location location, TimePeriod timePeriod) {
+    _id = recordID;
+    _date = date;
+    _victory = victory;
+    _mood = mood;
+    _location = location;
+    _timePeriod = timePeriod;
   }
 
   /**
@@ -140,6 +153,13 @@ class ProgressRecord {
 
   void setId(long id) {
     _id = id;
+  }
+
+  public String toString(){
+    return "Record ID: " + getId() + "\n" +
+            "Date: " + DateFormat.getDateInstance().format(getDate().getTime()) + "\n" +
+            (isVictory() ? "Victory! Keep it up! " : "Setback, Don't get discouraged ") + "\n";
+
   }
 
 }
