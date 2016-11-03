@@ -33,6 +33,7 @@ public class MotivationalTextServiceUnitTest implements Observer {
         assertEquals(text, mts.getCurrentText());
     }
 
+    @Test
     public void advanceTextTest() throws Exception {
         String text = "This is my text";
         MotivationalTextService mts = new MotivationalTextService();
