@@ -1,19 +1,18 @@
 package com.example.addictionrecoveryprogress;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutCompat;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.ParseException;
@@ -30,18 +29,12 @@ public class MainActivity extends AppCompatActivity {
   private ProgressRecord newRecord;
   private RecordOperations recordOps;
 
-  // text views and spinners if setback is selected
-  private TextView tv_mood;
-  private TextView tv_location;
-  private TextView tv_time;
-  private Spinner sp_mood;
+  // spinners if setback is selected
+private Spinner sp_mood;
   private Spinner sp_location;
   private Spinner sp_time;
 
   // Linear Layout that will be hidden until Setback is chosen
-//  LinearLayout ll_mood;
-//  LinearLayout ll_location;
-//  LinearLayout ll_time;
   LinearLayout ll_setback;
 
   @Override
@@ -55,24 +48,24 @@ public class MainActivity extends AppCompatActivity {
     isVictoryRadioButton = (RadioButton) findViewById(R.id.radio_isVictory);
     isSetbackRadiobutton = (RadioButton) findViewById(R.id.radio_isSetback);
     reportDateEditText = (EditText) findViewById(R.id.edit_text_report_date);
+
+    // Show date picker instead of inputting text
+    createDatePicker();
+
     addUpdateButton = (Button) findViewById(R.id.button_add_update_record);
 
-    // Create containers for setback fiels
+    // Create container for setback fields
     ll_setback = (LinearLayout) findViewById(R.id.ll_setback);
 
-    tv_mood = (TextView) findViewById(R.id.tv_mood);
+    // spinners
     sp_mood = (Spinner) findViewById(R.id.sp_mood);
-
-    tv_location = (TextView) findViewById(R.id.tv_location);
     sp_location = (Spinner) findViewById(R.id.sp_location);
-
-    tv_time = (TextView) findViewById(R.id.tv_time);
     sp_time = (Spinner) findViewById(R.id.sp_time);
 
     // add values to spinners
-    sp_mood.setAdapter(new ArrayAdapter<ProgressRecord.Mood>(this, R.layout.support_simple_spinner_dropdown_item, ProgressRecord.Mood.values()));
-    sp_location.setAdapter(new ArrayAdapter<ProgressRecord.Location>(this, R.layout.support_simple_spinner_dropdown_item, ProgressRecord.Location.values()));
-    sp_time.setAdapter(new ArrayAdapter<ProgressRecord.TimePeriod>(this, R.layout.support_simple_spinner_dropdown_item, ProgressRecord.TimePeriod.values()));
+    sp_mood.setAdapter(new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item, ProgressRecord.Mood.values()));
+    sp_location.setAdapter(new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item, ProgressRecord.Location.values()));
+    sp_time.setAdapter(new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item, ProgressRecord.TimePeriod.values()));
 
     // hide setback Linear Layout
     ll_setback.setVisibility(LinearLayout.GONE);
@@ -131,5 +124,38 @@ public class MainActivity extends AppCompatActivity {
     Calendar cal = Calendar.getInstance();
     cal.setTime(sdf.parse(date));
     return cal;
+  }
+
+  // Source: http://stackoverflow.com/questions/14933330/datepicker-how-to-popup-datepicker-when-click-on-edittext
+  public void createDatePicker() {
+    final Calendar myCalendar = Calendar.getInstance();
+    final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+      @Override
+      public void onDateSet(DatePicker view, int year, int monthOfYear,
+                            int dayOfMonth) {
+        myCalendar.set(Calendar.YEAR, year);
+        myCalendar.set(Calendar.MONTH, monthOfYear);
+        myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+        updateLabel(myCalendar);
+      }
+    };
+    reportDateEditText.setOnClickListener(new View.OnClickListener() {
+
+      @Override
+      public void onClick(View v) {
+        new DatePickerDialog(MainActivity.this, date, myCalendar
+                .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+      }
+    });
+  }
+
+  // update reportDateEditText with date selected on date picker
+  private void updateLabel(Calendar myCalendar) {
+
+    String myFormat = "dd/MM/yyyy"; //In which you need put here
+    SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+
+    reportDateEditText.setText(sdf.format(myCalendar.getTime()));
   }
 }

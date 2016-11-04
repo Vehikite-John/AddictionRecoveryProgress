@@ -20,12 +20,14 @@
         android:paddingBottom="@dimen/view_padding">
         <EditText
             android:id="@+id/edit_text_report_date"
-            android:inputType="date"
             android:hint="@string/add_date"
             android:layout_width="wrap_content"
             android:layout_weight="8"
             android:layout_height="wrap_content"
-            android:layout_gravity="start"/>
+            android:layout_gravity="start"
+            android:inputType="none"
+            android:clickable="true"
+            android:focusable="false"/>
         <ImageView
             android:id="@+id/image_view_report_date"
             android:src="@android:drawable/ic_menu_my_calendar"
@@ -67,7 +69,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:id="@+id/ll_setback">
+        android:id="@+id/ll_setback"
+        android:padding="@dimen/view_padding">
 
         <LinearLayout
             android:orientation="horizontal"
