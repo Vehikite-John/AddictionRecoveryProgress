@@ -10,4 +10,7 @@
     <string name="string_isVictory">Victory</string>
     <string name="string_isSetback">Setback</string>
     <string name="add_record">Add Record</string>
+    <string name="tv_mood">Mood</string>
+    <string name="tv_location">Location</string>
+    <string name="tv_time">Time</string>
 </resources>

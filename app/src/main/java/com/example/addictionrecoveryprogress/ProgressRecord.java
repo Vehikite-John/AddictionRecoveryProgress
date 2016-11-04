@@ -16,7 +16,7 @@ class ProgressRecord {
 
   enum Mood {
     STRESSED("Stressed"),
-    BORED("bored"),
+    BORED("Bored"),
     UPSET("Upset"),
     GUILTY("Guilty"),
     ANGRY("Angry"),
@@ -219,7 +219,9 @@ class ProgressRecord {
     return "Record ID: " + getId() + "\n" +
         "Date: " + (getDate() == null ? "null" :
         DateFormat.getDateInstance().format(getDate().getTime())) + "\n" +
-            (isVictory() ? "Victory! Keep it up! " : "Setback, Don't get discouraged ") + "\n";
+            (isVictory() ? "Victory! Keep it up! " : "Setback, Don't get discouraged \nMood: " +
+            getMood().toString() + "\nLocation: " + getLocation().toString() + "\nTime Period: " +
+            getTimePeriod().toString()) + "\n";
 
   }
 }
