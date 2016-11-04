@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_main"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.addictionrecoveryprogress.MainActivity">
@@ -12,4 +12,60 @@
         android:layout_height="wrap_content"
         android:text="@string/button_switch_to_view"
         android:onClick="startView" />
-</RelativeLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/view_padding">
+        <EditText
+            android:id="@+id/edit_text_report_date"
+            android:inputType="date"
+            android:hint="@string/add_date"
+            android:layout_width="wrap_content"
+            android:layout_weight="8"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"/>
+        <ImageView
+            android:id="@+id/image_view_report_date"
+            android:src="@android:drawable/ic_menu_my_calendar"
+            android:contentDescription="@string/date_picker_image_description"
+            android:layout_weight="5"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="@dimen/view_padding">
+        <RadioGroup
+            android:id="@+id/radio_victory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingRight="25dp">
+            <RadioButton
+                android:id="@+id/radio_isVictory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/string_isVictory"
+                android:textSize="@dimen/add_edit_textsize"
+                android:checked="true"/>
+            <RadioButton
+                android:id="@+id/radio_isSetback"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/string_isSetback"
+                android:textSize="@dimen/add_edit_textsize" />
+        </RadioGroup>
+    </LinearLayout>
+    <Button
+        android:id="@+id/button_add_update_record"
+        android:layout_width="@dimen/button_width"
+        android:layout_height="@dimen/button_height"
+        android:layout_marginTop="@dimen/button_padding"
+        android:text="@string/add_record"
+        android:layout_gravity="center"/>
+</LinearLayout>

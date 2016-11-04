@@ -5,4 +5,9 @@
     <string name="button_switch_to_view">View Prior Records</string>
     <string name="view_record_heading">All Records</string>
     <string name="add_record_heading">Add a Record</string>
+    <string name="add_date">Report Date (DD/MM/YYYY)</string>
+    <string name="date_picker_image_description">Date Picker</string>
+    <string name="string_isVictory">Victory</string>
+    <string name="string_isSetback">Setback</string>
+    <string name="add_record">Add Record</string>
 </resources>
