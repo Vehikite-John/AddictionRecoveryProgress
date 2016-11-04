@@ -15,27 +15,64 @@ class ProgressRecord {
   private TimePeriod _timePeriod;
 
   enum Mood {
-    STRESSED,
-    BORED,
-    SAD,
-    ANGRY,
-    LONELY
+    STRESSED("Stressed"),
+    BORED("bored"),
+    UPSET("Upset"),
+    GUILTY("Guilty"),
+    ANGRY("Angry"),
+    SAD("Sad"),
+    TIRED("Tired"),
+    LONELY("Lonely");
+
+    private String theMood;
+
+    Mood(String aMood) {
+      theMood = aMood;
+    }
+
+    @Override
+    public String toString() {
+      return theMood;
+    }
   }
 
   enum Location {
-    HOME_BEDROOM,
-    HOME_BATHROOM,
-    HOME_OFFICE,
-    WORK,
-    TRANSPORTATION,
-    ACCOMODATION
+    BEDROOM("Bedroom"),
+    BATHROOM("Bathroom"),
+    LIVING_ROOM("Living Room"),
+    COMPUTER_ROOM("Computer Room"),
+    WORK("Work"),
+    SCHOOL("School"),
+    TRANSPORTATION("While Traveling");
+
+    private String theLocation;
+
+    Location(String aLocation) {
+      theLocation = aLocation;
+    }
+
+    @Override
+    public String toString() {
+      return theLocation;
+    }
   }
 
   enum TimePeriod {
-    MORNING,
-    AFTERNOON,
-    EVENING,
-    NIGHT
+    MORNING("Morning"),
+    AFTERNOON("Afternoon"),
+    EVENING("Evening"),
+    NIGHT("Night");
+
+    private String theTimePeriod;
+
+    TimePeriod(String aTimePeriod) {
+      theTimePeriod = aTimePeriod;
+    }
+
+    @Override
+    public String toString() {
+      return theTimePeriod;
+    }
   }
 
   /**
