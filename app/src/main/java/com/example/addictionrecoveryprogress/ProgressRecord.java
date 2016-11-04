@@ -16,7 +16,7 @@ class ProgressRecord {
 
   enum Mood {
     STRESSED("Stressed"),
-    BORED("bored"),
+    BORED("Bored"),
     UPSET("Upset"),
     GUILTY("Guilty"),
     ANGRY("Angry"),
