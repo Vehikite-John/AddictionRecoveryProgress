@@ -42,6 +42,10 @@ class ProgressRecord {
    * Default constructor
    */
   ProgressRecord() {
+    // default date to yesterday
+    Calendar date = Calendar.getInstance();
+    date.add(Calendar.DATE, -1);
+    setDate(date);
   }
 
   /**

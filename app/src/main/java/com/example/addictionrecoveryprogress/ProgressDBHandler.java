@@ -25,7 +25,7 @@ class ProgressDBHandler extends SQLiteOpenHelper {
   private static final String TABLE_RECORDS_CREATE =
       "CREATE TABLE " + TABLE_RECORDS + " (" +
           COL_REC_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-          COL_REC_DATE + " INTEGER, " +
+          COL_REC_DATE + " INTEGER NOT NULL UNIQUE, " +
           COL_REC_VICTORY + " INTEGER, " +
           COL_REC_MOOD + " INTEGER, " +
           COL_REC_LOCATION + " INTEGER, " +
