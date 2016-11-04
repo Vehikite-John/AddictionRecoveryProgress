@@ -13,13 +13,13 @@ class ProgressDBHandler extends SQLiteOpenHelper {
   private static final int DB_VERSION = 1;
 
   // Progress records table name and columns
-  private static final String TABLE_RECORDS = "records";
-  private static final String COL_REC_ID = "id";       // INTEGER autoincrement
-  private static final String COL_REC_DATE = "date";     // INTEGER date.timeInMillis()
-  private static final String COL_REC_VICTORY = "victory";  // INTEGER (0 or 1)
-  private static final String COL_REC_MOOD = "mood";     // INTEGER mood.ordinal()
-  private static final String COL_REC_LOCATION = "location"; // INTEGER location.ordinal()
-  private static final String COL_REC_TIME = "time";     // INTEGER time.ordinal()
+  static final String TABLE_RECORDS = "records";
+  static final String COL_REC_ID = "id";             // INTEGER autoincrement
+  static final String COL_REC_DATE = "date";         // INTEGER date.timeInMillis()
+  static final String COL_REC_VICTORY = "victory";   // INTEGER (0 or 1)
+  static final String COL_REC_MOOD = "mood";         // INTEGER mood.ordinal()
+  static final String COL_REC_LOCATION = "location"; // INTEGER location.ordinal()
+  static final String COL_REC_TIME = "time";         // INTEGER time.ordinal()
 
   // Progress records table creation statement
   private static final String TABLE_RECORDS_CREATE =

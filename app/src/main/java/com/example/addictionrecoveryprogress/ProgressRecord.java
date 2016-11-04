@@ -47,7 +47,8 @@ class ProgressRecord {
   /**
    * Non-Default constructor
    */
-  ProgressRecord(long recordID, Calendar date, boolean victory, Mood mood, Location location, TimePeriod timePeriod) {
+  ProgressRecord(long recordID, Calendar date, boolean victory, Mood mood, Location location,
+                 TimePeriod timePeriod) {
     _id = recordID;
     _date = date;
     _victory = victory;
@@ -175,7 +176,8 @@ class ProgressRecord {
    */
   public String toString(){
     return "Record ID: " + getId() + "\n" +
-            "Date: " + DateFormat.getDateInstance().format(getDate().getTime()) + "\n" +
+        "Date: " + (getDate() == null ? "null" :
+        DateFormat.getDateInstance().format(getDate().getTime())) + "\n" +
             (isVictory() ? "Victory! Keep it up! " : "Setback, Don't get discouraged ") + "\n";
 
   }

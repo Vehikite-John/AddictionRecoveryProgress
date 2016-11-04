@@ -33,6 +33,11 @@ public class ProgressDBHandlerTest {
   @Test
   public void testOnUpgrade() throws Exception {
     ProgressDBHandler handler = new ProgressDBHandler(mContext);
+
+    // This test is bogus because the upgrade contract is to preserve data when
+    // changing the database schema, not to create tables. A better test would be
+    // to save something in the database in the old format, upgrade, then retrieve that
+    // record and confirm it is correct. Not sure how to do all of that in a unit test.
     handler.onUpgrade(mDb, 1, 2);
     // creates 2 tables
     verify(mDb, times(2)).execSQL(startsWith("CREATE TABLE"));

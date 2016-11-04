@@ -7,8 +7,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.robolectric.RobolectricTestRunner;
+import org.robolectric.RuntimeEnvironment;
+import org.robolectric.annotation.Config;
 
 import java.util.Calendar;
 import java.util.List;
@@ -16,22 +17,22 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(RobolectricTestRunner.class)
+@Config(constants = BuildConfig.class, sdk = 23)
 public class RecordOperationsTest {
-  private RecordOperations op;
-
-  @Mock
-  Context mContext;
+  private RecordOperations tOp;
+  private Context tContext;
 
   @Before
   public void setUp() {
-    op = new RecordOperations(mContext);
-    op.open();
+    tContext = RuntimeEnvironment.application;
+    tOp = new RecordOperations(tContext);
+    tOp.open();
   }
 
   @After
   public void cleanUp() {
-    op.close();
+    tOp.close();
   }
 
   @Test
@@ -39,20 +40,24 @@ public class RecordOperationsTest {
     ProgressRecord record = new ProgressRecord();
     record.setDate(Calendar.getInstance());
 
-    ProgressRecord addedRecord = op.addRecord(record);
+    ProgressRecord addedRecord = tOp.addRecord(record);
     assertEquals(record.getDate().getTimeInMillis(), addedRecord.getDate().getTimeInMillis());
   }
 
   @Test
   public void testGetRecordByDate() throws Exception {
     Calendar date = Calendar.getInstance();
-    date.set(2016, 1, 14);
+    date.set(2016, Calendar.JANUARY, 14);
+    date.set(Calendar.HOUR_OF_DAY, 0);
+    date.set(Calendar.MINUTE, 0);
+    date.set(Calendar.SECOND, 0);
+    date.set(Calendar.MILLISECOND, 0);
 
     ProgressRecord record = new ProgressRecord();
     record.setDate(date);
-    op.addRecord(record);
+    tOp.addRecord(record);
 
-    record = op.getRecord(date);
+    record = tOp.getRecord(date);
     assertNotEquals(null, record);
     assertEquals(date.getTimeInMillis(), record.getDate().getTimeInMillis());
   }
@@ -60,10 +65,10 @@ public class RecordOperationsTest {
   @Test
   public void testGetRecordById() throws Exception {
     ProgressRecord record = new ProgressRecord();
-    record = op.addRecord(record);
+    record = tOp.addRecord(record);
     long id = record.getId();
 
-    record = op.getRecord(id);
+    record = tOp.getRecord(id);
     assertNotEquals(null, record);
     assertEquals(id, record.getId());
   }
@@ -71,25 +76,30 @@ public class RecordOperationsTest {
   @Test
   public void testUpdateRecord() throws Exception {
     ProgressRecord record = new ProgressRecord();
-    record = op.addRecord(record);
+    record = tOp.addRecord(record);
     long id = record.getId();
 
     Calendar date = Calendar.getInstance();
-    date.set(2016, 2, 10);
+    date.set(2016, Calendar.FEBRUARY, 10);
+    date.set(Calendar.HOUR_OF_DAY, 0);
+    date.set(Calendar.MINUTE, 0);
+    date.set(Calendar.SECOND, 0);
+    date.set(Calendar.MILLISECOND, 0);
+
     record.setDate(date);
-    int count = op.updateRecord(record);
+    int count = tOp.updateRecord(record);
     assertEquals(1, count);
-    record = op.getRecord(id);
+    record = tOp.getRecord(id);
     assertEquals(date.getTimeInMillis(), record.getDate().getTimeInMillis());
   }
 
   @Test
   public void testGetAllRecords() throws Exception {
     ProgressRecord record = new ProgressRecord();
-    record = op.addRecord(record);
+    record = tOp.addRecord(record);
     long id = record.getId();
 
-    List<ProgressRecord> records = op.getAllRecords();
+    List<ProgressRecord> records = tOp.getAllRecords();
     int matchCount = 0;
     for (ProgressRecord r : records) {
       if (r.getId() == id) {
