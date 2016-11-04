@@ -137,6 +137,11 @@ class ProgressRecord {
     return _date;
   }
 
+  /**
+   * Sets the progress record date
+   *
+   * @param date day of progress record
+   */
   void setDate(Calendar date) {
     _date = date;
 
@@ -147,19 +152,31 @@ class ProgressRecord {
     _date.set(Calendar.MILLISECOND, 0);
   }
 
+  /**
+   * Returns unique progress record ID
+   *
+   * @return progress record ID
+   */
   long getId() {
     return _id;
   }
 
+  /** Sets unique progress record ID
+   *
+   * @param id unique progress record ID
+   */
   void setId(long id) {
     _id = id;
   }
 
+  /** Returns string representation of a progress record
+   *
+   * @return string representation of progress record
+   */
   public String toString(){
     return "Record ID: " + getId() + "\n" +
             "Date: " + DateFormat.getDateInstance().format(getDate().getTime()) + "\n" +
             (isVictory() ? "Victory! Keep it up! " : "Setback, Don't get discouraged ") + "\n";
 
   }
-
 }

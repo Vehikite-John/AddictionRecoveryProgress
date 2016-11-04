@@ -1,11 +1,10 @@
 package com.example.addictionrecoveryprogress;
 
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -19,34 +18,33 @@ import static org.junit.Assert.assertNotEquals;
 
 @RunWith(MockitoJUnitRunner.class)
 public class RecordOperationsTest {
-  private static RecordOperations op;
+  private RecordOperations op;
 
-  @SuppressLint("StaticFieldLeak")
   @Mock
-  static Context mContext;
+  Context mContext;
 
-  @BeforeClass
-  public static void setUp() {
+  @Before
+  public void setUp() {
     op = new RecordOperations(mContext);
     op.open();
   }
 
-  @AfterClass
-  public static void cleanUp() {
+  @After
+  public void cleanUp() {
     op.close();
   }
 
   @Test
-  public void testAddRecord() {
+  public void testAddRecord() throws Exception {
     ProgressRecord record = new ProgressRecord();
     record.setDate(Calendar.getInstance());
 
     ProgressRecord addedRecord = op.addRecord(record);
-    assertEquals(record.getDate().get(Calendar.DATE), addedRecord.getDate().get(Calendar.DATE));
+    assertEquals(record.getDate().getTimeInMillis(), addedRecord.getDate().getTimeInMillis());
   }
 
   @Test
-  public void testGetRecordByDate() {
+  public void testGetRecordByDate() throws Exception {
     Calendar date = Calendar.getInstance();
     date.set(2016, 1, 14);
 
@@ -56,11 +54,11 @@ public class RecordOperationsTest {
 
     record = op.getRecord(date);
     assertNotEquals(null, record);
-    assertEquals(date.get(Calendar.DATE), record.getDate().get(Calendar.DATE));
+    assertEquals(date.getTimeInMillis(), record.getDate().getTimeInMillis());
   }
 
   @Test
-  public void testGetRecordById() {
+  public void testGetRecordById() throws Exception {
     ProgressRecord record = new ProgressRecord();
     record = op.addRecord(record);
     long id = record.getId();
@@ -71,7 +69,7 @@ public class RecordOperationsTest {
   }
 
   @Test
-  public void testUpdateRecord() {
+  public void testUpdateRecord() throws Exception {
     ProgressRecord record = new ProgressRecord();
     record = op.addRecord(record);
     long id = record.getId();
@@ -82,11 +80,11 @@ public class RecordOperationsTest {
     int count = op.updateRecord(record);
     assertEquals(1, count);
     record = op.getRecord(id);
-    assertEquals(date.get(Calendar.DATE), record.getDate().get(Calendar.DATE));
+    assertEquals(date.getTimeInMillis(), record.getDate().getTimeInMillis());
   }
 
   @Test
-  public void testGetAllRecords() {
+  public void testGetAllRecords() throws Exception {
     ProgressRecord record = new ProgressRecord();
     record = op.addRecord(record);
     long id = record.getId();
