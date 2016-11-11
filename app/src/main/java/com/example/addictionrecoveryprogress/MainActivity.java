@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -28,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
   private Button addUpdateButton;
   private ProgressRecord newRecord;
   private RecordOperations recordOps;
+  private ImageView calImage;
 
   // spinners if setback is selected
 private Spinner sp_mood;
@@ -49,7 +51,8 @@ private Spinner sp_mood;
     isSetbackRadiobutton = (RadioButton) findViewById(R.id.radio_isSetback);
     reportDateEditText = (EditText) findViewById(R.id.edit_text_report_date);
 
-    // Show date picker instead of inputting text
+    // creates date picker
+    // appears when user selects calendar icon
     createDatePicker();
 
     addUpdateButton = (Button) findViewById(R.id.button_add_update_record);
@@ -72,6 +75,8 @@ private Spinner sp_mood;
 
     recordOps = new RecordOperations(this);
     recordOps.open();
+
+    // startEditTextListener();
 
     radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
       @Override
@@ -139,7 +144,9 @@ private Spinner sp_mood;
         updateLabel(myCalendar);
       }
     };
-    reportDateEditText.setOnClickListener(new View.OnClickListener() {
+    // Date picker appears when user clicks on calendar icon
+    calImage = (ImageView) findViewById(R.id.image_view_report_date);
+    calImage.setOnClickListener(new View.OnClickListener() {
 
       @Override
       public void onClick(View v) {
