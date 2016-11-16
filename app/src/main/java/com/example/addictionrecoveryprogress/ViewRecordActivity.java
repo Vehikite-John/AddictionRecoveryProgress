@@ -34,7 +34,9 @@ public class ViewRecordActivity extends ListActivity {
         setListAdapter(adapter);
     }
 
-    /** called when the user clicks the 'Add a new Record' button */
+    /**
+     * called when the user clicks the 'Add a new Record' button
+     */
     public void startAdd(View view) {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
