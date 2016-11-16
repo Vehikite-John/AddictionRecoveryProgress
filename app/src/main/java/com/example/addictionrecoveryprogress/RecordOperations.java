@@ -79,9 +79,11 @@ class RecordOperations {
         ProgressDBHandler.COL_REC_ID + "=?", new String[]{String.valueOf(id)},
         null, null, null);
     if (cursor != null) {
-      cursor.moveToFirst();
-      record = mapCursorToRecord(cursor);
-    } else {
+      if (cursor.moveToFirst()) {
+        record = mapCursorToRecord(cursor);
+      }
+    }
+    if (record == null) {
       Logger.getLogger(ProgressRecord.class.getName()).log(Level.SEVERE, "ID:" + id + " not found.");
     }
     return record;
