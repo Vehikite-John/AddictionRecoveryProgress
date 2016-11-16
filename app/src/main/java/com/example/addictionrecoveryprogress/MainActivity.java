@@ -3,9 +3,7 @@ package com.example.addictionrecoveryprogress;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutCompat;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -57,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
     reportDateEditText = (EditText) findViewById(R.id.edit_text_report_date);
     addUpdateButton = (Button) findViewById(R.id.button_add_update_record);
 
-    // Create containers for setback fiels
+    // Create containers for setback fields
     ll_setback = (LinearLayout) findViewById(R.id.ll_setback);
 
     tv_mood = (TextView) findViewById(R.id.tv_mood);

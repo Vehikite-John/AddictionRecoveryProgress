@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ViewRecordActivity extends ListActivity {
 
@@ -18,6 +20,13 @@ public class ViewRecordActivity extends ListActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_record);
         recordOps = new RecordOperations(this);
+        try {
+            recordOps.open();
+            records = recordOps.getAllRecords();
+            recordOps.close();
+        } catch (Exception ex) {
+            Logger.getLogger(ViewRecordActivity.class.getName()).log(Level.SEVERE, null, ex);
+        }
         recordOps.open();
         records = recordOps.getAllRecords();
         recordOps.close();
