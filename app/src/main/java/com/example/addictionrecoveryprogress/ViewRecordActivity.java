@@ -23,14 +23,7 @@ public class ViewRecordActivity extends ListActivity {
 
         try {
             recordOps.open();
-            records = recordOps.getAllRecords();
-            recordOps.close();
-        } catch (Exception ex) {
-            Logger.getLogger(ViewRecordActivity.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        try {
-            recordOps.open();
+            recordOps.getRecord(-1);
             records = recordOps.getAllRecords();
             recordOps.close();
         } catch (Exception ex) {
