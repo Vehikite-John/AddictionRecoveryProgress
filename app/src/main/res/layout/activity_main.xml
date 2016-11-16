@@ -8,7 +8,7 @@
     tools:context="com.example.addictionrecoveryprogress.MainActivity">
 
     <Button
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/button_switch_to_view"
         android:onClick="startView" />
@@ -25,6 +25,8 @@
             android:layout_width="wrap_content"
             android:layout_weight="8"
             android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:inputType="date"
             android:layout_gravity="start"
             android:paddingLeft="@dimen/activity_horizontal_margin"/>
         <ImageView
@@ -81,7 +83,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/tv_mood"
-                android:paddingLeft="@dimen/activity_horizontal_margin"
                 android:layout_weight="1" />
 
             <Spinner
@@ -103,7 +104,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/tv_location"
-                android:paddingLeft="@dimen/activity_horizontal_margin"
                 android:layout_weight="1"/>
 
             <Spinner
@@ -125,7 +125,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/tv_time"
-                android:paddingLeft="@dimen/activity_horizontal_margin"
                 android:layout_weight="1"/>
 
             <Spinner
