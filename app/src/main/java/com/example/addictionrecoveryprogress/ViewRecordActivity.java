@@ -20,6 +20,7 @@ public class ViewRecordActivity extends ListActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_record);
         recordOps = new RecordOperations(this);
+
         try {
             recordOps.open();
             records = recordOps.getAllRecords();
@@ -27,10 +28,14 @@ public class ViewRecordActivity extends ListActivity {
         } catch (Exception ex) {
             Logger.getLogger(ViewRecordActivity.class.getName()).log(Level.SEVERE, null, ex);
         }
-        recordOps.open();
-        recordOps.getRecord(-1); // deliberate error -- please remove me
-        records = recordOps.getAllRecords();
-        recordOps.close();
+
+        try {
+            recordOps.open();
+            records = recordOps.getAllRecords();
+            recordOps.close();
+        } catch (Exception ex) {
+            Logger.getLogger(ViewRecordActivity.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
         ArrayAdapter<ProgressRecord> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, records);
         setListAdapter(adapter);
