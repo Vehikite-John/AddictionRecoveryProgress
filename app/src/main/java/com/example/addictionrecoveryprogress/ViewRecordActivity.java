@@ -28,6 +28,7 @@ public class ViewRecordActivity extends ListActivity {
             Logger.getLogger(ViewRecordActivity.class.getName()).log(Level.SEVERE, null, ex);
         }
         recordOps.open();
+        recordOps.getRecord(-1); // deliberate error -- please remove me
         records = recordOps.getAllRecords();
         recordOps.close();
 

@@ -8,6 +8,8 @@ import android.database.sqlite.SQLiteDatabase;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * A persistent repository of ProgressRecords
@@ -61,6 +63,7 @@ class RecordOperations {
 
     // update record with unique row ID
     record.setId(id);
+    Logger.getLogger(ProgressRecord.class.getName()).log(Level.INFO, "ID:" + id + " added.");
     return record;
   }
 
@@ -78,6 +81,8 @@ class RecordOperations {
     if (cursor != null) {
       cursor.moveToFirst();
       record = mapCursorToRecord(cursor);
+    } else {
+      Logger.getLogger(ProgressRecord.class.getName()).log(Level.SEVERE, "ID:" + id + " not found.");
     }
     return record;
   }
@@ -115,6 +120,7 @@ class RecordOperations {
         records.add(mapCursorToRecord(cursor));
       }
     }
+    Logger.getLogger(ProgressRecord.class.getName()).log(Level.INFO, "# of records: " + records.size());
     return records;
   }
 
