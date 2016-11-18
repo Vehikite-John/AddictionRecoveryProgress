@@ -24,6 +24,55 @@ class RecordOperations {
             ProgressDBHandler.COL_REC_TIME
     };
 
+    private static final String SQL_RUN_GROUP =
+        "SELECT " + ProgressDBHandler.COL_REC_DATE + ", " +
+            ProgressDBHandler.COL_REC_VICTORY + ", " +
+            "(SELECT COUNT(*)" +
+            " FROM " + ProgressDBHandler.TABLE_RECORDS + " R" +
+            " WHERE R." + ProgressDBHandler.COL_REC_VICTORY +
+            "    <> RR." + ProgressDBHandler.COL_REC_VICTORY +
+            "  AND R." + ProgressDBHandler.COL_REC_DATE +
+            "    <= RR." + ProgressDBHandler.COL_REC_DATE +
+            ") AS runGroup" +
+            "FROM " + ProgressDBHandler.TABLE_RECORDS + "RR";
+
+    private static final String SQL_STREAK =
+        "SELECT " + ProgressDBHandler.COL_REC_VICTORY + ", " +
+            "  MIN(" + ProgressDBHandler.COL_REC_DATE + ") AS startDate, " +
+            "  MAX(" + ProgressDBHandler.COL_REC_DATE + ") AS endDate, " +
+            "  COUNT (*) AS length " +
+            "FROM (" + SQL_RUN_GROUP + ")" +
+            "GROUP BY " + ProgressDBHandler.COL_REC_VICTORY + ", runGroup " +
+            "ORDER BY MIN(" + ProgressDBHandler.COL_REC_DATE + ")";
+
+    private static final String SQL_MAX_STREAK =
+        "SELECT * " +
+            "FROM (" + SQL_STREAK + ") " +
+            "WHERE " + ProgressDBHandler.COL_REC_VICTORY + " = 1" +
+            "ORDER BY length DESC " +
+            "LIMIT 1";
+
+    private static final String SQL_CUR_STREAK =
+        "SELECT * " +
+            "FROM (" + SQL_STREAK + ") " +
+            "WHERE endDate = (SELECT MAX(endDate) FROM " + ProgressDBHandler.TABLE_RECORDS + ")";
+
+    private static final String SQL_TOTAL_VICTORIES =
+        "SELECT COUNT(*) AS total " +
+            "FROM " + ProgressDBHandler.TABLE_RECORDS + " " +
+            "WHERE " + ProgressDBHandler.COL_REC_VICTORY + " = 1";
+
+    private static final String SQL_RANGE_VICTORIES =
+        "SELECT COUNT(*) AS total " +
+            "FROM " + ProgressDBHandler.TABLE_RECORDS + " " +
+            "WHERE " + ProgressDBHandler.COL_REC_VICTORY + " = 1" +
+            " AND " + ProgressDBHandler.COL_REC_DATE + " >= ? " +
+            " AND " + ProgressDBHandler.COL_REC_DATE + " <= ? ";
+
+    private static final String SQL_TOTAL_COUNT =
+        "SELECT COUNT(*) AS totalCount " +
+            "FROM " + ProgressDBHandler.TABLE_RECORDS;
+
     private ProgressDBHandler _dbHandler;
     private SQLiteDatabase _db;
 
@@ -102,8 +151,9 @@ class RecordOperations {
                 ProgressDBHandler.COL_REC_DATE + "=?", new String[]{String.valueOf(millis)},
                 null, null, null);
         if (cursor != null) {
-            cursor.moveToFirst();
-            record = mapCursorToRecord(cursor);
+            if (cursor.moveToFirst()) {
+                record = mapCursorToRecord(cursor);
+            }
         }
         return record;
     }
@@ -135,6 +185,94 @@ class RecordOperations {
     int updateRecord(ProgressRecord record) {
         return _db.update(ProgressDBHandler.TABLE_RECORDS, mapRecordToContentValues(record),
                 ProgressDBHandler.COL_REC_ID + "=?", new String[]{String.valueOf(record.getId())});
+    }
+
+    int getLongestStreak() {
+        int length = 0;
+        Cursor cursor = _db.rawQuery(SQL_MAX_STREAK, null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                length = cursor.getInt(cursor.getColumnIndex("length"));
+            }
+            cursor.close();
+        }
+        return length;
+    }
+
+    int getCurrentStreak() {
+        int length = 0;
+        Cursor cursor = _db.rawQuery(SQL_CUR_STREAK, null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                length = cursor.getInt(cursor.getColumnIndex("length"));
+            }
+            cursor.close();
+        }
+        return length;
+    }
+
+    int getTotalVictories() {
+        Cursor cursor = _db.rawQuery(SQL_TOTAL_VICTORIES, null);
+        int total = 0;
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                total = cursor.getInt(cursor.getColumnIndex("total"));
+            }
+            cursor.close();
+        }
+        return total;
+    }
+
+    int getMonthVictories() {
+        // get the 1st day of the current month
+        Calendar date = Calendar.getInstance();
+        date.set(Calendar.DAY_OF_MONTH, 1);
+        date.set(Calendar.HOUR_OF_DAY, 0);
+        date.set(Calendar.MINUTE, 0);
+        date.set(Calendar.SECOND, 0);
+        date.set(Calendar.MILLISECOND, 0);
+        long start = date.getTimeInMillis();
+
+        // get the last day of the current month
+        date.set(Calendar.DAY_OF_MONTH, date.getActualMaximum(Calendar.DAY_OF_MONTH));
+        long end = date.getTimeInMillis();
+
+        // get the # of victories in the date range
+        int total = 0;
+        Cursor cursor = _db.rawQuery(SQL_RANGE_VICTORIES, new String[]{String.valueOf(start),
+            String.valueOf(end)});
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                total = cursor.getInt(cursor.getColumnIndex("total"));
+            }
+            cursor.close();
+        }
+        return total;
+    }
+
+    int getTotalVictoriesPercent() {
+        Cursor cursor = _db.rawQuery(SQL_TOTAL_COUNT, null);
+        int count = 0;
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                count = cursor.getInt(cursor.getColumnIndex("totalCount"));
+            }
+            cursor.close();
+        }
+
+        // short-circuit return for empty table
+        if (count == 0) {
+            return 0;
+        }
+
+        return (getTotalVictories() * 100) / count;
+    }
+
+    int getMonthVictoriesPercent() {
+        Calendar date = Calendar.getInstance();
+        int count = date.getActualMaximum(Calendar.DAY_OF_MONTH);
+
+        return (getMonthVictories() * 100) / count;
     }
 
     private static ContentValues mapRecordToContentValues(ProgressRecord record) {
