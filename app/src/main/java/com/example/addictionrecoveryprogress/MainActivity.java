@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
   private TextView validDateMessage;
 
   // spinners if setback is selected
-private Spinner sp_mood;
+  private Spinner sp_mood;
   private Spinner sp_location;
   private Spinner sp_time;
 
@@ -163,7 +163,7 @@ private Spinner sp_mood;
           addUpdateButton.setEnabled(true);
 
           // attempt to get record based on inputted date
-          ProgressRecord tempRecord = new ProgressRecord();
+          ProgressRecord tempRecord;
           tempRecord = recordOps.getRecord(cal);
           Log.i("Test", "id = " + tempRecord.getId());
           // new records have an id of 0
@@ -184,6 +184,9 @@ private Spinner sp_mood;
     addUpdateButton.setText("Update");
     Toast t = Toast.makeText(MainActivity.this, "Record for this date exists. Record restored.", Toast.LENGTH_SHORT);
     t.show();
+
+    // set newRecord = record
+    newRecord = record;
 
     // restore values
     if(record.isVictory()) {
