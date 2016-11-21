@@ -4,6 +4,9 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -14,11 +17,13 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
@@ -30,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
   private ProgressRecord newRecord;
   private RecordOperations recordOps;
   private ImageView calImage;
+  private TextView validDateMessage;
 
   // spinners if setback is selected
 private Spinner sp_mood;
@@ -50,6 +56,9 @@ private Spinner sp_mood;
     isVictoryRadioButton = (RadioButton) findViewById(R.id.radio_isVictory);
     isSetbackRadiobutton = (RadioButton) findViewById(R.id.radio_isSetback);
     reportDateEditText = (EditText) findViewById(R.id.edit_text_report_date);
+    // add textwatcher to edittext
+    reportDateEditText.addTextChangedListener(dateWatcher);
+    validDateMessage = (TextView) findViewById(R.id.tv_validDateMessage);
 
     // creates date picker
     // appears when user selects calendar icon
@@ -109,13 +118,101 @@ private Spinner sp_mood;
         } catch (ParseException e) {
           e.printStackTrace();
         }
-        recordOps.addRecord(newRecord);
+        //TODO: figure out why record isn't updating
+        if (addUpdateButton.getText().equals("Update")) {
+          recordOps.updateRecord(newRecord);
+        }
+        else {
+          recordOps.addRecord(newRecord);
+        }
         Toast t = Toast.makeText(MainActivity.this, newRecord.toString(), Toast.LENGTH_SHORT);
         t.show();
         Intent i = new Intent(MainActivity.this,ViewRecordActivity.class);
         startActivity(i);
       }
     });
+  }
+
+  // validate date as text is entered in edittext
+  // http://stacktips.com/tutorials/android/android-textwatcher-example
+  private final TextWatcher dateWatcher = new TextWatcher() {
+    @Override
+    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+    }
+
+    @Override
+    public void afterTextChanged(Editable editable) {
+      String date = reportDateEditText.getText().toString();
+      // show error message if invalid date is entered
+      if (!isValidFormat(date)) {
+        validDateMessage.setText("Invalid date format");
+        validDateMessage.setVisibility(View.VISIBLE);
+      }
+      else {
+        try {
+          Calendar cal = formatDate(date);
+
+          // remove error message and activate button when valid date is entered
+          validDateMessage.setVisibility(View.INVISIBLE);
+          addUpdateButton.setEnabled(true);
+
+          // attempt to get record based on inputted date
+          ProgressRecord tempRecord = new ProgressRecord();
+          tempRecord = recordOps.getRecord(cal);
+          Log.i("Test", "id = " + tempRecord.getId());
+          // new records have an id of 0
+          // if record exists (i.e. id != 0), restore record
+          if (tempRecord.getId() != 0) {
+            restoreRecord(tempRecord);
+          }
+        } catch (ParseException e) {
+          e.printStackTrace();
+        }
+      }
+    }
+  };
+
+  // restore record based from inputted date
+  public void restoreRecord(ProgressRecord record) {
+    // update Button text to Update
+    addUpdateButton.setText("Update");
+    Toast t = Toast.makeText(MainActivity.this, "Record for this date exists. Record restored.", Toast.LENGTH_SHORT);
+    t.show();
+
+    // restore values
+    if(record.isVictory()) {
+      isVictoryRadioButton.setChecked(true);
+    }
+    else {
+      isVictoryRadioButton.setChecked(false);
+      isSetbackRadiobutton.setChecked(true);
+      // source: http://stackoverflow.com/questions/11072576/set-selected-item-of-spinner-programmatically
+      sp_mood.setSelection(((ArrayAdapter) sp_mood.getAdapter()).getPosition(record.getMood()));
+      sp_time.setSelection(((ArrayAdapter) sp_time.getAdapter()).getPosition(record.getTimePeriod()));
+      sp_location.setSelection(((ArrayAdapter) sp_location.getAdapter()).getPosition(record.getLocation()));
+    }
+  }
+
+  // check if date is valid
+  // source: http://stackoverflow.com/questions/20231539/java-check-the-date-format-of-current-string-is-according-to-required-format-or
+  public boolean isValidFormat(String value) {
+    Date date = null;
+    try {
+      SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
+      date = sdf.parse(value);
+      if (!value.equals(sdf.format(date))) {
+        date = null;
+      }
+    } catch (ParseException ex) {
+      ex.printStackTrace();
+    }
+    return date != null;
   }
 
   /** called when the user clicks the 'Add a new Record' button */

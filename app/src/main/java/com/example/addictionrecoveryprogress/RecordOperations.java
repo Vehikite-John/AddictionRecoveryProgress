@@ -94,7 +94,11 @@ class RecordOperations {
     Cursor cursor = _db.query(ProgressDBHandler.TABLE_RECORDS, REC_COLUMNS,
         ProgressDBHandler.COL_REC_DATE + "=?", new String[]{String.valueOf(millis)},
         null, null, null);
-    if (cursor != null) {
+    // if record doesn't exist
+    if (cursor.getCount() <= 0) {
+      record = new ProgressRecord();
+    }
+    else {
       cursor.moveToFirst();
       record = mapCursorToRecord(cursor);
     }

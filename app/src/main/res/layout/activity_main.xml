@@ -17,7 +17,8 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="@dimen/view_padding">
+        android:paddingBottom="@dimen/view_padding"
+        android:id="@+id/ll_date">
         <EditText
             android:id="@+id/edit_text_report_date"
             android:hint="@string/add_date"
@@ -36,11 +37,26 @@
     </LinearLayout>
 
     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+        <TextView
+            android:id="@+id/tv_validDateMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#ffd33a26"
+            android:padding="5dp"
+            android:textColor="#fff"
+            android:visibility="invisible" />
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:orientation="horizontal"
-        android:padding="@dimen/view_padding">
+        android:padding="@dimen/view_padding"
+        android:id="@+id/ll_radio">
         <RadioGroup
             android:id="@+id/radio_victory"
             android:layout_width="wrap_content"
@@ -140,5 +156,6 @@
         android:layout_height="@dimen/button_height"
         android:layout_marginTop="@dimen/button_padding"
         android:text="@string/add_record"
-        android:layout_gravity="center"/>
+        android:layout_gravity="center"
+        android:enabled="false"/>
 </LinearLayout>
