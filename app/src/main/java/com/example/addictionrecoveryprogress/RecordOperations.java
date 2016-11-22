@@ -33,29 +33,31 @@ class RecordOperations {
             "    <> RR." + ProgressDBHandler.COL_REC_VICTORY +
             "  AND R." + ProgressDBHandler.COL_REC_DATE +
             "    <= RR." + ProgressDBHandler.COL_REC_DATE +
-            ") AS runGroup" +
-            "FROM " + ProgressDBHandler.TABLE_RECORDS + "RR";
+            ") AS runGroup " +
+            "FROM " + ProgressDBHandler.TABLE_RECORDS + " RR";
 
     private static final String SQL_STREAK =
         "SELECT " + ProgressDBHandler.COL_REC_VICTORY + ", " +
             "  MIN(" + ProgressDBHandler.COL_REC_DATE + ") AS startDate, " +
             "  MAX(" + ProgressDBHandler.COL_REC_DATE + ") AS endDate, " +
             "  COUNT (*) AS length " +
-            "FROM (" + SQL_RUN_GROUP + ")" +
+            "FROM (" + SQL_RUN_GROUP + ") " +
             "GROUP BY " + ProgressDBHandler.COL_REC_VICTORY + ", runGroup " +
             "ORDER BY MIN(" + ProgressDBHandler.COL_REC_DATE + ")";
 
     private static final String SQL_MAX_STREAK =
         "SELECT * " +
             "FROM (" + SQL_STREAK + ") " +
-            "WHERE " + ProgressDBHandler.COL_REC_VICTORY + " = 1" +
+            "WHERE " + ProgressDBHandler.COL_REC_VICTORY + " = 1 " +
             "ORDER BY length DESC " +
             "LIMIT 1";
 
     private static final String SQL_CUR_STREAK =
         "SELECT * " +
             "FROM (" + SQL_STREAK + ") " +
-            "WHERE endDate = (SELECT MAX(endDate) FROM " + ProgressDBHandler.TABLE_RECORDS + ")";
+            "WHERE " + ProgressDBHandler.COL_REC_VICTORY + " = 1 " +
+            "ORDER BY endDate DESC " +
+            "LIMIT 1";
 
     private static final String SQL_TOTAL_VICTORIES =
         "SELECT COUNT(*) AS total " +
@@ -66,8 +68,8 @@ class RecordOperations {
         "SELECT COUNT(*) AS total " +
             "FROM " + ProgressDBHandler.TABLE_RECORDS + " " +
             "WHERE " + ProgressDBHandler.COL_REC_VICTORY + " = 1" +
-            " AND " + ProgressDBHandler.COL_REC_DATE + " >= ? " +
-            " AND " + ProgressDBHandler.COL_REC_DATE + " <= ? ";
+            " AND " + ProgressDBHandler.COL_REC_DATE + " >= ?" +
+            " AND " + ProgressDBHandler.COL_REC_DATE + " <= ?";
 
     private static final String SQL_TOTAL_COUNT =
         "SELECT COUNT(*) AS totalCount " +

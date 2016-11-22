@@ -26,8 +26,8 @@ public class ProgressDBHandlerTest {
     ProgressDBHandler handler = new ProgressDBHandler(mContext);
 
     handler.onCreate(mDb);
-    // creates 2 tables
-    verify(mDb, times(2)).execSQL(startsWith("CREATE TABLE"));
+    // creates 1 tables
+    verify(mDb, times(1)).execSQL(startsWith("CREATE TABLE"));
   }
 
   @Test
@@ -39,7 +39,7 @@ public class ProgressDBHandlerTest {
     // to save something in the database in the old format, upgrade, then retrieve that
     // record and confirm it is correct. Not sure how to do all of that in a unit test.
     handler.onUpgrade(mDb, 1, 2);
-    // creates 2 tables
-    verify(mDb, times(2)).execSQL(startsWith("CREATE TABLE"));
+    // creates 1 table
+    verify(mDb, times(1)).execSQL(startsWith("CREATE TABLE"));
   }
 }
