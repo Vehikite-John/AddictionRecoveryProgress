@@ -8,21 +8,19 @@ import android.database.sqlite.SQLiteDatabase;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * A persistent repository of ProgressRecords
  **/
 class RecordOperations {
-    private static final String REC_COLUMNS[] = {
-            ProgressDBHandler.COL_REC_ID,
-            ProgressDBHandler.COL_REC_DATE,
-            ProgressDBHandler.COL_REC_VICTORY,
-            ProgressDBHandler.COL_REC_MOOD,
-            ProgressDBHandler.COL_REC_LOCATION,
-            ProgressDBHandler.COL_REC_TIME
-    };
+  private static final String REC_COLUMNS[] = {
+      ProgressDBHandler.COL_REC_ID,
+      ProgressDBHandler.COL_REC_DATE,
+      ProgressDBHandler.COL_REC_VICTORY,
+      ProgressDBHandler.COL_REC_MOOD,
+      ProgressDBHandler.COL_REC_LOCATION,
+      ProgressDBHandler.COL_REC_TIME
+  };
 
     private static final String SQL_RUN_GROUP =
         "SELECT " + ProgressDBHandler.COL_REC_DATE + ", " +
@@ -118,76 +116,74 @@ class RecordOperations {
         return record;
     }
 
-    /**
-     * Retrieve a ProgressRecord using the unique record ID.
-     *
-     * @param id the unique ProgressRecord ID.
-     * @return the ProgressRecord
-     */
-    ProgressRecord getRecord(long id) {
-        ProgressRecord record = null;
-        Cursor cursor = _db.query(ProgressDBHandler.TABLE_RECORDS, REC_COLUMNS,
-                ProgressDBHandler.COL_REC_ID + "=?", new String[]{String.valueOf(id)},
-                null, null, null);
-        if (cursor != null) {
-            if (cursor.moveToFirst()) {
-                record = mapCursorToRecord(cursor);
-            }
-        }
-        if (record == null) {
-            Logger.getLogger(ProgressRecord.class.getName()).log(Level.SEVERE, "ID:" + id + " not found.");
-        }
-        return record;
+  /**
+   * Retrieve a ProgressRecord using the unique record ID.
+   *
+   * @param id the unique ProgressRecord ID.
+   * @return the ProgressRecord
+   */
+  ProgressRecord getRecord(long id) {
+    ProgressRecord record = null;
+    Cursor cursor = _db.query(ProgressDBHandler.TABLE_RECORDS, REC_COLUMNS,
+        ProgressDBHandler.COL_REC_ID + "=?", new String[]{String.valueOf(id)},
+        null, null, null);
+    if (cursor != null) {
+      cursor.moveToFirst();
+      record = mapCursorToRecord(cursor);
     }
+    return record;
+  }
 
-    /**
-     * Retrieve a ProgressRecord using the record's date.
-     *
-     * @param date the date for which progress was recorded.
-     * @return the ProgressRecord
-     */
-    ProgressRecord getRecord(Calendar date) {
-        ProgressRecord record = null;
-        long millis = date.getTimeInMillis();
-        Cursor cursor = _db.query(ProgressDBHandler.TABLE_RECORDS, REC_COLUMNS,
-                ProgressDBHandler.COL_REC_DATE + "=?", new String[]{String.valueOf(millis)},
-                null, null, null);
-        if (cursor != null) {
-            if (cursor.moveToFirst()) {
-                record = mapCursorToRecord(cursor);
-            }
-        }
-        return record;
+  /**
+   * Retrieve a ProgressRecord using the record's date.
+   *
+   * @param date the date for which progress was recorded.
+   * @return the ProgressRecord
+   */
+  ProgressRecord getRecord(Calendar date) {
+    ProgressRecord record = null;
+    long millis = date.getTimeInMillis();
+    Cursor cursor = _db.query(ProgressDBHandler.TABLE_RECORDS, REC_COLUMNS,
+        ProgressDBHandler.COL_REC_DATE + "=?", new String[]{String.valueOf(millis)},
+        null, null, null);
+    // if record doesn't exist
+    if (cursor.getCount() <= 0) {
+      record = new ProgressRecord();
     }
+    else {
+      cursor.moveToFirst();
+      record = mapCursorToRecord(cursor);
+    }
+    return record;
+  }
 
-    /**
-     * Retrieves a list of all ProgressRecords in the repository.
-     *
-     * @return the List of ProgressRecords
-     */
-    List<ProgressRecord> getAllRecords() {
-        List<ProgressRecord> records = new ArrayList<>();
-        Cursor cursor = _db.query(ProgressDBHandler.TABLE_RECORDS, REC_COLUMNS,
-                null, null, null, null, null);
-        if (cursor.getCount() > 0) {
-            while (cursor.moveToNext()) {
-                records.add(mapCursorToRecord(cursor));
-            }
-        }
-        Logger.getLogger(ProgressRecord.class.getName()).log(Level.INFO, "# of records: " + records.size());
-        return records;
+  /**
+   * Retrieves a list of all ProgressRecords in the repository.
+   *
+   * @return the List of ProgressRecords
+   */
+  List<ProgressRecord> getAllRecords() {
+    List<ProgressRecord> records = new ArrayList<>();
+    Cursor cursor = _db.query(ProgressDBHandler.TABLE_RECORDS, REC_COLUMNS,
+        null, null, null, null, null);
+    if (cursor.getCount() > 0) {
+      while (cursor.moveToNext()) {
+        records.add(mapCursorToRecord(cursor));
+      }
     }
+    return records;
+  }
 
-    /**
-     * Updates an existing ProgressRecord in the repository
-     *
-     * @param record the record to update
-     * @return the number of records updated
-     */
-    int updateRecord(ProgressRecord record) {
-        return _db.update(ProgressDBHandler.TABLE_RECORDS, mapRecordToContentValues(record),
-                ProgressDBHandler.COL_REC_ID + "=?", new String[]{String.valueOf(record.getId())});
-    }
+  /**
+   * Updates an existing ProgressRecord in the repository
+   *
+   * @param record the record to update
+   * @return the number of records updated
+   */
+  int updateRecord(ProgressRecord record) {
+    return _db.update(ProgressDBHandler.TABLE_RECORDS, mapRecordToContentValues(record),
+        ProgressDBHandler.COL_REC_ID + "=?", new String[]{String.valueOf(record.getId())});
+  }
 
     int getLongestStreak() {
         int length = 0;
