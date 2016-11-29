@@ -53,7 +53,7 @@ public class ViewRecordActivity extends AppCompatActivity {
             Logger.getLogger(ViewRecordActivity.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        LinearLayout lView = (LinearLayout)findViewById(R.id.statisticsLinearlayout);
+        LinearLayout lView = (LinearLayout) findViewById(R.id.statisticsLinearlayout);
 
         totalVictoriesText = new TextView(this);
         totalVictoriesText.setText("Total Victories: " + totalVictories);

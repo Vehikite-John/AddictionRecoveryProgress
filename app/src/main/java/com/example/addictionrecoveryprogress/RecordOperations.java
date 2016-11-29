@@ -13,65 +13,65 @@ import java.util.List;
  * A persistent repository of ProgressRecords
  **/
 class RecordOperations {
-  private static final String REC_COLUMNS[] = {
-      ProgressDBHandler.COL_REC_ID,
-      ProgressDBHandler.COL_REC_DATE,
-      ProgressDBHandler.COL_REC_VICTORY,
-      ProgressDBHandler.COL_REC_MOOD,
-      ProgressDBHandler.COL_REC_LOCATION,
-      ProgressDBHandler.COL_REC_TIME
-  };
+    private static final String REC_COLUMNS[] = {
+            ProgressDBHandler.COL_REC_ID,
+            ProgressDBHandler.COL_REC_DATE,
+            ProgressDBHandler.COL_REC_VICTORY,
+            ProgressDBHandler.COL_REC_MOOD,
+            ProgressDBHandler.COL_REC_LOCATION,
+            ProgressDBHandler.COL_REC_TIME
+    };
 
     private static final String SQL_RUN_GROUP =
-        "SELECT " + ProgressDBHandler.COL_REC_DATE + ", " +
-            ProgressDBHandler.COL_REC_VICTORY + ", " +
-            "(SELECT COUNT(*)" +
-            " FROM " + ProgressDBHandler.TABLE_RECORDS + " R" +
-            " WHERE R." + ProgressDBHandler.COL_REC_VICTORY +
-            "    <> RR." + ProgressDBHandler.COL_REC_VICTORY +
-            "  AND R." + ProgressDBHandler.COL_REC_DATE +
-            "    <= RR." + ProgressDBHandler.COL_REC_DATE +
-            ") AS runGroup " +
-            "FROM " + ProgressDBHandler.TABLE_RECORDS + " RR";
+            "SELECT " + ProgressDBHandler.COL_REC_DATE + ", " +
+                    ProgressDBHandler.COL_REC_VICTORY + ", " +
+                    "(SELECT COUNT(*)" +
+                    " FROM " + ProgressDBHandler.TABLE_RECORDS + " R" +
+                    " WHERE R." + ProgressDBHandler.COL_REC_VICTORY +
+                    "    <> RR." + ProgressDBHandler.COL_REC_VICTORY +
+                    "  AND R." + ProgressDBHandler.COL_REC_DATE +
+                    "    <= RR." + ProgressDBHandler.COL_REC_DATE +
+                    ") AS runGroup " +
+                    "FROM " + ProgressDBHandler.TABLE_RECORDS + " RR";
 
     private static final String SQL_STREAK =
-        "SELECT " + ProgressDBHandler.COL_REC_VICTORY + ", " +
-            "  MIN(" + ProgressDBHandler.COL_REC_DATE + ") AS startDate, " +
-            "  MAX(" + ProgressDBHandler.COL_REC_DATE + ") AS endDate, " +
-            "  COUNT (*) AS length " +
-            "FROM (" + SQL_RUN_GROUP + ") " +
-            "GROUP BY " + ProgressDBHandler.COL_REC_VICTORY + ", runGroup " +
-            "ORDER BY MIN(" + ProgressDBHandler.COL_REC_DATE + ")";
+            "SELECT " + ProgressDBHandler.COL_REC_VICTORY + ", " +
+                    "  MIN(" + ProgressDBHandler.COL_REC_DATE + ") AS startDate, " +
+                    "  MAX(" + ProgressDBHandler.COL_REC_DATE + ") AS endDate, " +
+                    "  COUNT (*) AS length " +
+                    "FROM (" + SQL_RUN_GROUP + ") " +
+                    "GROUP BY " + ProgressDBHandler.COL_REC_VICTORY + ", runGroup " +
+                    "ORDER BY MIN(" + ProgressDBHandler.COL_REC_DATE + ")";
 
     private static final String SQL_MAX_STREAK =
-        "SELECT * " +
-            "FROM (" + SQL_STREAK + ") " +
-            "WHERE " + ProgressDBHandler.COL_REC_VICTORY + " = 1 " +
-            "ORDER BY length DESC " +
-            "LIMIT 1";
+            "SELECT * " +
+                    "FROM (" + SQL_STREAK + ") " +
+                    "WHERE " + ProgressDBHandler.COL_REC_VICTORY + " = 1 " +
+                    "ORDER BY length DESC " +
+                    "LIMIT 1";
 
     private static final String SQL_CUR_STREAK =
-        "SELECT * " +
-            "FROM (" + SQL_STREAK + ") " +
-            "WHERE " + ProgressDBHandler.COL_REC_VICTORY + " = 1 " +
-            "ORDER BY endDate DESC " +
-            "LIMIT 1";
+            "SELECT * " +
+                    "FROM (" + SQL_STREAK + ") " +
+                    "WHERE " + ProgressDBHandler.COL_REC_VICTORY + " = 1 " +
+                    "ORDER BY endDate DESC " +
+                    "LIMIT 1";
 
     private static final String SQL_TOTAL_VICTORIES =
-        "SELECT COUNT(*) AS total " +
-            "FROM " + ProgressDBHandler.TABLE_RECORDS + " " +
-            "WHERE " + ProgressDBHandler.COL_REC_VICTORY + " = 1";
+            "SELECT COUNT(*) AS total " +
+                    "FROM " + ProgressDBHandler.TABLE_RECORDS + " " +
+                    "WHERE " + ProgressDBHandler.COL_REC_VICTORY + " = 1";
 
     private static final String SQL_RANGE_VICTORIES =
-        "SELECT COUNT(*) AS total " +
-            "FROM " + ProgressDBHandler.TABLE_RECORDS + " " +
-            "WHERE " + ProgressDBHandler.COL_REC_VICTORY + " = 1" +
-            " AND " + ProgressDBHandler.COL_REC_DATE + " >= ?" +
-            " AND " + ProgressDBHandler.COL_REC_DATE + " <= ?";
+            "SELECT COUNT(*) AS total " +
+                    "FROM " + ProgressDBHandler.TABLE_RECORDS + " " +
+                    "WHERE " + ProgressDBHandler.COL_REC_VICTORY + " = 1" +
+                    " AND " + ProgressDBHandler.COL_REC_DATE + " >= ?" +
+                    " AND " + ProgressDBHandler.COL_REC_DATE + " <= ?";
 
     private static final String SQL_TOTAL_COUNT =
-        "SELECT COUNT(*) AS totalCount " +
-            "FROM " + ProgressDBHandler.TABLE_RECORDS;
+            "SELECT COUNT(*) AS totalCount " +
+                    "FROM " + ProgressDBHandler.TABLE_RECORDS;
 
     private ProgressDBHandler _dbHandler;
     private SQLiteDatabase _db;
@@ -112,78 +112,76 @@ class RecordOperations {
 
         // update record with unique row ID
         record.setId(id);
-        Logger.getLogger(ProgressRecord.class.getName()).log(Level.INFO, "ID:" + id + " added.");
         return record;
     }
 
-  /**
-   * Retrieve a ProgressRecord using the unique record ID.
-   *
-   * @param id the unique ProgressRecord ID.
-   * @return the ProgressRecord
-   */
-  ProgressRecord getRecord(long id) {
-    ProgressRecord record = null;
-    Cursor cursor = _db.query(ProgressDBHandler.TABLE_RECORDS, REC_COLUMNS,
-        ProgressDBHandler.COL_REC_ID + "=?", new String[]{String.valueOf(id)},
-        null, null, null);
-    if (cursor != null) {
-      cursor.moveToFirst();
-      record = mapCursorToRecord(cursor);
+    /**
+     * Retrieve a ProgressRecord using the unique record ID.
+     *
+     * @param id the unique ProgressRecord ID.
+     * @return the ProgressRecord
+     */
+    ProgressRecord getRecord(long id) {
+        ProgressRecord record = null;
+        Cursor cursor = _db.query(ProgressDBHandler.TABLE_RECORDS, REC_COLUMNS,
+                ProgressDBHandler.COL_REC_ID + "=?", new String[]{String.valueOf(id)},
+                null, null, null);
+        if (cursor != null) {
+            cursor.moveToFirst();
+            record = mapCursorToRecord(cursor);
+        }
+        return record;
     }
-    return record;
-  }
 
-  /**
-   * Retrieve a ProgressRecord using the record's date.
-   *
-   * @param date the date for which progress was recorded.
-   * @return the ProgressRecord
-   */
-  ProgressRecord getRecord(Calendar date) {
-    ProgressRecord record = null;
-    long millis = date.getTimeInMillis();
-    Cursor cursor = _db.query(ProgressDBHandler.TABLE_RECORDS, REC_COLUMNS,
-        ProgressDBHandler.COL_REC_DATE + "=?", new String[]{String.valueOf(millis)},
-        null, null, null);
-    // if record doesn't exist
-    if (cursor.getCount() <= 0) {
-      record = new ProgressRecord();
+    /**
+     * Retrieve a ProgressRecord using the record's date.
+     *
+     * @param date the date for which progress was recorded.
+     * @return the ProgressRecord
+     */
+    ProgressRecord getRecord(Calendar date) {
+        ProgressRecord record;
+        long millis = date.getTimeInMillis();
+        Cursor cursor = _db.query(ProgressDBHandler.TABLE_RECORDS, REC_COLUMNS,
+                ProgressDBHandler.COL_REC_DATE + "=?", new String[]{String.valueOf(millis)},
+                null, null, null);
+        // if record doesn't exist
+        if (cursor.getCount() <= 0) {
+            record = new ProgressRecord();
+        } else {
+            cursor.moveToFirst();
+            record = mapCursorToRecord(cursor);
+        }
+        return record;
     }
-    else {
-      cursor.moveToFirst();
-      record = mapCursorToRecord(cursor);
-    }
-    return record;
-  }
 
-  /**
-   * Retrieves a list of all ProgressRecords in the repository.
-   *
-   * @return the List of ProgressRecords
-   */
-  List<ProgressRecord> getAllRecords() {
-    List<ProgressRecord> records = new ArrayList<>();
-    Cursor cursor = _db.query(ProgressDBHandler.TABLE_RECORDS, REC_COLUMNS,
-        null, null, null, null, null);
-    if (cursor.getCount() > 0) {
-      while (cursor.moveToNext()) {
-        records.add(mapCursorToRecord(cursor));
-      }
+    /**
+     * Retrieves a list of all ProgressRecords in the repository.
+     *
+     * @return the List of ProgressRecords
+     */
+    List<ProgressRecord> getAllRecords() {
+        List<ProgressRecord> records = new ArrayList<>();
+        Cursor cursor = _db.query(ProgressDBHandler.TABLE_RECORDS, REC_COLUMNS,
+                null, null, null, null, null);
+        if (cursor.getCount() > 0) {
+            while (cursor.moveToNext()) {
+                records.add(mapCursorToRecord(cursor));
+            }
+        }
+        return records;
     }
-    return records;
-  }
 
-  /**
-   * Updates an existing ProgressRecord in the repository
-   *
-   * @param record the record to update
-   * @return the number of records updated
-   */
-  int updateRecord(ProgressRecord record) {
-    return _db.update(ProgressDBHandler.TABLE_RECORDS, mapRecordToContentValues(record),
-        ProgressDBHandler.COL_REC_ID + "=?", new String[]{String.valueOf(record.getId())});
-  }
+    /**
+     * Updates an existing ProgressRecord in the repository
+     *
+     * @param record the record to update
+     * @return the number of records updated
+     */
+    int updateRecord(ProgressRecord record) {
+        return _db.update(ProgressDBHandler.TABLE_RECORDS, mapRecordToContentValues(record),
+                ProgressDBHandler.COL_REC_ID + "=?", new String[]{String.valueOf(record.getId())});
+    }
 
     int getLongestStreak() {
         int length = 0;
@@ -238,7 +236,7 @@ class RecordOperations {
         // get the # of victories in the date range
         int total = 0;
         Cursor cursor = _db.rawQuery(SQL_RANGE_VICTORIES, new String[]{String.valueOf(start),
-            String.valueOf(end)});
+                String.valueOf(end)});
         if (cursor != null) {
             if (cursor.moveToFirst()) {
                 total = cursor.getInt(cursor.getColumnIndex("total"));
