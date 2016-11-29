@@ -126,7 +126,6 @@ public class MainActivity extends AppCompatActivity {
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-                //TODO: figure out why record isn't updating
                 if (addUpdateButton.getText().equals("Update")) {
                     recordOps.updateRecord(newRecord);
                 } else {
@@ -168,6 +167,7 @@ public class MainActivity extends AppCompatActivity {
             if (!isValidFormat(date)) {
                 validDateMessage.setText("Invalid date format");
                 validDateMessage.setVisibility(View.VISIBLE);
+                addUpdateButton.setEnabled(false);
             } else {
                 try {
                     Calendar cal = formatDate(date);
@@ -175,6 +175,7 @@ public class MainActivity extends AppCompatActivity {
                     // remove error message and activate button when valid date is entered
                     validDateMessage.setVisibility(View.INVISIBLE);
                     addUpdateButton.setEnabled(true);
+                    addUpdateButton.setText("Add Record");
 
                     // attempt to get record based on inputted date
                     ProgressRecord tempRecord;
