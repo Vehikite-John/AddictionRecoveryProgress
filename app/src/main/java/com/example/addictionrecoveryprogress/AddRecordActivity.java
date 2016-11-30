@@ -29,7 +29,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-public class MainActivity extends AppCompatActivity {
+public class AddRecordActivity extends AppCompatActivity {
 
     private RadioGroup radioGroup;
     private RadioButton isVictoryRadioButton, isSetbackRadiobutton;
@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
     private Spinner sp_location;
     private Spinner sp_time;
 
-    private static final String TAG = MainActivity.class.getSimpleName();
+    private static final String TAG = AddRecordActivity.class.getSimpleName();
 
     // Linear Layout that will be hidden until Setback is chosen
     LinearLayout ll_setback;
@@ -131,9 +131,9 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     recordOps.addRecord(newRecord);
                 }
-                Toast t = Toast.makeText(MainActivity.this, newRecord.toString(), Toast.LENGTH_SHORT);
+                Toast t = Toast.makeText(AddRecordActivity.this, newRecord.toString(), Toast.LENGTH_SHORT);
                 t.show();
-                Intent i = new Intent(MainActivity.this, ViewRecordActivity.class);
+                Intent i = new Intent(AddRecordActivity.this, DashboardActivity.class);
                 startActivity(i);
             }
         });
@@ -143,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
      * called when the user clicks the 'Add a new Record' button
      */
     public void startView(View view) {
-        Intent intent = new Intent(this, ViewRecordActivity.class);
+        Intent intent = new Intent(this, DashboardActivity.class);
         startActivity(intent);
     }
 
@@ -197,7 +197,7 @@ public class MainActivity extends AppCompatActivity {
     public void restoreRecord(ProgressRecord record) {
         // update Button text to Update
         addUpdateButton.setText("Update");
-        Toast t = Toast.makeText(MainActivity.this, "Record for this date exists. Record restored.", Toast.LENGTH_SHORT);
+        Toast t = Toast.makeText(AddRecordActivity.this, "Record for this date exists. Record restored.", Toast.LENGTH_SHORT);
         t.show();
 
         // set newRecord = record
@@ -258,7 +258,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                new DatePickerDialog(MainActivity.this, date, myCalendar
+                new DatePickerDialog(AddRecordActivity.this, date, myCalendar
                         .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
                         myCalendar.get(Calendar.DAY_OF_MONTH)).show();
             }
@@ -287,13 +287,13 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_home:
                 // User chose the "home" item, show the app home UI...
-                intent = new Intent(this, ViewRecordActivity.class);
+                intent = new Intent(this, DashboardActivity.class);
                 startActivity(intent);
                 return true;
 
             case R.id.action_add:
                 // User chose the "home" item, show the app home UI...
-                intent = new Intent(this, MainActivity.class);
+                intent = new Intent(this, AddRecordActivity.class);
                 startActivity(intent);
                 return true;
 

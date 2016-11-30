@@ -12,7 +12,7 @@ import android.widget.TextView;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class ViewRecordActivity extends AppCompatActivity {
+public class DashboardActivity extends AppCompatActivity {
 
     private RecordOperations recordOps;
     private int longestStreak;
@@ -50,7 +50,7 @@ public class ViewRecordActivity extends AppCompatActivity {
             monthVictoriesPercent = recordOps.getMonthVictoriesPercent();
             recordOps.close();
         } catch (Exception ex) {
-            Logger.getLogger(ViewRecordActivity.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(DashboardActivity.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         LinearLayout lView = (LinearLayout) findViewById(R.id.statisticsLinearlayout);
@@ -94,13 +94,13 @@ public class ViewRecordActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_home:
                 // User chose the "home" item, show the app home UI...
-                intent = new Intent(this, ViewRecordActivity.class);
+                intent = new Intent(this, DashboardActivity.class);
                 startActivity(intent);
                 return true;
 
             case R.id.action_add:
                 // User chose the "home" item, show the app home UI...
-                intent = new Intent(this, MainActivity.class);
+                intent = new Intent(this, AddRecordActivity.class);
                 startActivity(intent);
                 return true;
 

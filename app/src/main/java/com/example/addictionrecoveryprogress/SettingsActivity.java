@@ -31,13 +31,13 @@ public class SettingsActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_home:
                 // User chose the "home" item, show the app home UI...
-                intent = new Intent(this, ViewRecordActivity.class);
+                intent = new Intent(this, DashboardActivity.class);
                 startActivity(intent);
                 return true;
 
             case R.id.action_add:
                 // User chose the "home" item, show the app home UI...
-                intent = new Intent(this, MainActivity.class);
+                intent = new Intent(this, AddRecordActivity.class);
                 startActivity(intent);
                 return true;
 
