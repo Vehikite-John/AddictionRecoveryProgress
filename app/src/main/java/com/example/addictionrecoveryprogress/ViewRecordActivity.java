@@ -104,6 +104,12 @@ public class ViewRecordActivity extends AppCompatActivity {
                 startActivity(intent);
                 return true;
 
+            case R.id.action_settings:
+                // User chose the "home" item, show the app home UI...
+                intent = new Intent(this, SettingsActivity.class);
+                startActivity(intent);
+                return true;
+
             default:
                 // If we got here, the user's action was not recognized.
                 // Invoke the superclass to handle it.
