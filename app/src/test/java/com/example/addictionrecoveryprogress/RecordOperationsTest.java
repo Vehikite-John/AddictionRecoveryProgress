@@ -172,6 +172,15 @@ public class RecordOperationsTest {
     initDbForStatsTests();
     int count = tOp.getMonthVictories();
     assertEquals(0, count);
+
+    Calendar date = Calendar.getInstance();
+    date.set(2016, Calendar.MARCH, 1);
+    count = tOp.getMonthVictories(date);
+    assertEquals(22, count);
+
+    date.set(2016, Calendar.APRIL, 1);
+    count = tOp.getMonthVictories(date);
+    assertEquals(2, count);
   }
 
   @Test
@@ -186,5 +195,14 @@ public class RecordOperationsTest {
     initDbForStatsTests();
     int percent = tOp.getMonthVictoriesPercent();
     assertEquals(0, percent);
+
+    Calendar date = Calendar.getInstance();
+    date.set(2016, Calendar.MARCH, 1);
+    percent = tOp.getMonthVictoriesPercent(date);
+    assertEquals(70, percent);
+
+    date.set(2016, Calendar.APRIL, 1);
+    percent = tOp.getMonthVictoriesPercent(date);
+    assertEquals(50, percent);
   }
 }
