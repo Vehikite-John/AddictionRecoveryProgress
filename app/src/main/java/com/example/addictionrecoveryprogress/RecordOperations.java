@@ -69,6 +69,12 @@ class RecordOperations {
                     " AND " + ProgressDBHandler.COL_REC_DATE + " >= ?" +
                     " AND " + ProgressDBHandler.COL_REC_DATE + " <= ?";
 
+    private static final String SQL_RANGE_COUNT =
+        "SELECT COUNT(*) AS rangeCount " +
+            "FROM " + ProgressDBHandler.TABLE_RECORDS + " " +
+            "WHERE " + ProgressDBHandler.COL_REC_DATE + " >= ?" +
+            " AND " + ProgressDBHandler.COL_REC_DATE + " <= ?";
+
     private static final String SQL_TOTAL_COUNT =
             "SELECT COUNT(*) AS totalCount " +
                     "FROM " + ProgressDBHandler.TABLE_RECORDS;
@@ -219,9 +225,8 @@ class RecordOperations {
         return total;
     }
 
-    int getMonthVictories() {
-        // get the 1st day of the current month
-        Calendar date = Calendar.getInstance();
+    int getMonthVictories(Calendar date) {
+        // start range at 1st day of month containing 'date'
         date.set(Calendar.DAY_OF_MONTH, 1);
         date.set(Calendar.HOUR_OF_DAY, 0);
         date.set(Calendar.MINUTE, 0);
@@ -229,14 +234,14 @@ class RecordOperations {
         date.set(Calendar.MILLISECOND, 0);
         long start = date.getTimeInMillis();
 
-        // get the last day of the current month
+        // get the last day of the given month
         date.set(Calendar.DAY_OF_MONTH, date.getActualMaximum(Calendar.DAY_OF_MONTH));
         long end = date.getTimeInMillis();
 
         // get the # of victories in the date range
         int total = 0;
         Cursor cursor = _db.rawQuery(SQL_RANGE_VICTORIES, new String[]{String.valueOf(start),
-                String.valueOf(end)});
+            String.valueOf(end)});
         if (cursor != null) {
             if (cursor.moveToFirst()) {
                 total = cursor.getInt(cursor.getColumnIndex("total"));
@@ -244,6 +249,11 @@ class RecordOperations {
             cursor.close();
         }
         return total;
+    }
+
+    int getMonthVictories() {
+        // get victories the current month
+        return getMonthVictories(Calendar.getInstance());
     }
 
     int getTotalVictoriesPercent() {
@@ -264,11 +274,41 @@ class RecordOperations {
         return (getTotalVictories() * 100) / count;
     }
 
-    int getMonthVictoriesPercent() {
-        Calendar date = Calendar.getInstance();
-        int count = date.getActualMaximum(Calendar.DAY_OF_MONTH);
+    int getMonthVictoriesPercent(Calendar date) {
+        // start range at 1st day of month containing 'date'
+        date.set(Calendar.DAY_OF_MONTH, 1);
+        date.set(Calendar.HOUR_OF_DAY, 0);
+        date.set(Calendar.MINUTE, 0);
+        date.set(Calendar.SECOND, 0);
+        date.set(Calendar.MILLISECOND, 0);
+        long start = date.getTimeInMillis();
 
-        return (getMonthVictories() * 100) / count;
+        // get the last day of the given month
+        date.set(Calendar.DAY_OF_MONTH, date.getActualMaximum(Calendar.DAY_OF_MONTH));
+        long end = date.getTimeInMillis();
+
+        // get the # of entries in the date range
+        int count = 0;
+        Cursor cursor = _db.rawQuery(SQL_RANGE_COUNT, new String[]{String.valueOf(start),
+            String.valueOf(end)});
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                count = cursor.getInt(cursor.getColumnIndex("rangeCount"));
+            }
+            cursor.close();
+        }
+
+        // short-circuit return for empty range
+        if (count == 0) {
+            return 0;
+        }
+
+        return (getMonthVictories(date) * 100) / count;
+    }
+
+    int getMonthVictoriesPercent() {
+        // get percentage of victories for current month
+        return getMonthVictoriesPercent(Calendar.getInstance());
     }
 
     private static ContentValues mapRecordToContentValues(ProgressRecord record) {
