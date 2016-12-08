@@ -220,8 +220,9 @@ class ProgressRecord {
         "Date: " + (getDate() == null ? "null" :
         DateFormat.getDateInstance().format(getDate().getTime())) + "\n" +
             (isVictory() ? "Victory! Keep it up! " : "Setback; don't get discouraged \nMood: " +
-            getMood().toString() + "\nLocation: " + getLocation().toString() + "\nTime Period: " +
-            getTimePeriod().toString()) + "\n";
+                (getMood() == null ? "null" : getMood().toString()) + "\nLocation: " +
+                (getLocation() == null ? "null" : getLocation().toString()) + "\nTime Period: " +
+                (getTimePeriod() == null ? "null" : getTimePeriod().toString())) + "\n";
 
   }
 }

@@ -79,6 +79,33 @@ class RecordOperations {
             "SELECT COUNT(*) AS totalCount " +
                     "FROM " + ProgressDBHandler.TABLE_RECORDS;
 
+    private static final String SQL_MOOD_MODE =
+        "SELECT " + ProgressDBHandler.COL_REC_MOOD + ", " +
+            "COUNT(*) AS mode " +
+            "FROM " + ProgressDBHandler.TABLE_RECORDS + " " +
+            "WHERE " + ProgressDBHandler.COL_REC_MOOD + " IS NOT NULL " +
+            "GROUP BY " + ProgressDBHandler.COL_REC_MOOD + " " +
+            "ORDER BY mode DESC " +
+            "LIMIT 1";
+
+    private static final String SQL_LOCATION_MODE =
+        "SELECT " + ProgressDBHandler.COL_REC_LOCATION + ", " +
+            "COUNT(*) AS mode " +
+            "FROM " + ProgressDBHandler.TABLE_RECORDS + " " +
+            "WHERE " + ProgressDBHandler.COL_REC_LOCATION + " IS NOT NULL " +
+            "GROUP BY " + ProgressDBHandler.COL_REC_LOCATION + " " +
+            "ORDER BY mode DESC " +
+            "LIMIT 1";
+
+    private static final String SQL_TIME_MODE =
+        "SELECT " + ProgressDBHandler.COL_REC_TIME + ", " +
+            "COUNT(*) AS mode " +
+            "FROM " + ProgressDBHandler.TABLE_RECORDS + " " +
+            "WHERE " + ProgressDBHandler.COL_REC_TIME + " IS NOT NULL " +
+            "GROUP BY " + ProgressDBHandler.COL_REC_TIME + " " +
+            "ORDER BY mode DESC " +
+            "LIMIT 1";
+
     private ProgressDBHandler _dbHandler;
     private SQLiteDatabase _db;
 
@@ -133,8 +160,10 @@ class RecordOperations {
                 ProgressDBHandler.COL_REC_ID + "=?", new String[]{String.valueOf(id)},
                 null, null, null);
         if (cursor != null) {
-            cursor.moveToFirst();
-            record = mapCursorToRecord(cursor);
+            if (cursor.moveToFirst()) {
+                record = mapCursorToRecord(cursor);
+            }
+            cursor.close();
         }
         return record;
     }
@@ -309,6 +338,45 @@ class RecordOperations {
     int getMonthVictoriesPercent() {
         // get percentage of victories for current month
         return getMonthVictoriesPercent(Calendar.getInstance());
+    }
+
+    ProgressRecord.Mood getMostFrequentMood() {
+        Cursor cursor = _db.rawQuery(SQL_MOOD_MODE, null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                int moodIndex = cursor.getInt(cursor.getColumnIndex(ProgressDBHandler.COL_REC_MOOD));
+                return ProgressRecord.Mood.values()[moodIndex];
+            }
+            cursor.close();
+        }
+
+        return null;
+    }
+
+    ProgressRecord.Location getMostFrequentLocation() {
+        Cursor cursor = _db.rawQuery(SQL_LOCATION_MODE, null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                int moodIndex = cursor.getInt(cursor.getColumnIndex(ProgressDBHandler.COL_REC_LOCATION));
+                return ProgressRecord.Location.values()[moodIndex];
+            }
+            cursor.close();
+        }
+
+        return null;
+    }
+
+    ProgressRecord.TimePeriod getMostFrequentTime() {
+        Cursor cursor = _db.rawQuery(SQL_TIME_MODE, null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                int moodIndex = cursor.getInt(cursor.getColumnIndex(ProgressDBHandler.COL_REC_TIME));
+                return ProgressRecord.TimePeriod.values()[moodIndex];
+            }
+            cursor.close();
+        }
+
+        return null;
     }
 
     private static ContentValues mapRecordToContentValues(ProgressRecord record) {

@@ -30,12 +30,45 @@ public class RecordOperationsTest {
         true, true, true, true, true, true, true,
         false, false, false, true, true, true, true,
         true, true, false, true, false, false, true};
+    ProgressRecord.Mood moods[] = new ProgressRecord.Mood[]{
+        ProgressRecord.Mood.STRESSED, ProgressRecord.Mood.BORED, ProgressRecord.Mood.STRESSED,
+        ProgressRecord.Mood.LONELY, ProgressRecord.Mood.BORED, ProgressRecord.Mood.BORED,
+        ProgressRecord.Mood.STRESSED, ProgressRecord.Mood.STRESSED, ProgressRecord.Mood.BORED,
+        ProgressRecord.Mood.LONELY, ProgressRecord.Mood.BORED};
+    ProgressRecord.Location locations[] = new ProgressRecord.Location[]{
+        ProgressRecord.Location.COMPUTER_ROOM, ProgressRecord.Location.WORK,
+        ProgressRecord.Location.BEDROOM, ProgressRecord.Location.COMPUTER_ROOM,
+        ProgressRecord.Location.WORK, ProgressRecord.Location.WORK,
+        ProgressRecord.Location.BEDROOM, ProgressRecord.Location.SCHOOL,
+        ProgressRecord.Location.COMPUTER_ROOM, ProgressRecord.Location.COMPUTER_ROOM,
+        ProgressRecord.Location.TRANSPORTATION
+    };
+    ProgressRecord.TimePeriod times[] = new ProgressRecord.TimePeriod[]{
+        ProgressRecord.TimePeriod.MORNING, ProgressRecord.TimePeriod.MORNING,
+        ProgressRecord.TimePeriod.AFTERNOON, ProgressRecord.TimePeriod.EVENING,
+        ProgressRecord.TimePeriod.MORNING, ProgressRecord.TimePeriod.NIGHT,
+        ProgressRecord.TimePeriod.MORNING, ProgressRecord.TimePeriod.NIGHT,
+        ProgressRecord.TimePeriod.AFTERNOON, ProgressRecord.TimePeriod.NIGHT,
+        ProgressRecord.TimePeriod.MORNING
+    };
     Calendar date = Calendar.getInstance();
     date.set(2016, Calendar.MARCH, 1);
     ProgressRecord record = new ProgressRecord();
+    int moodIx = 0;
+    int locationIx = 0;
+    int timeIx = 0;
     for (boolean victory : victories) {
       record.setVictory(victory);
       record.setDate(date);
+      if (!victory) {
+        record.setMood(moods[moodIx++]);
+        record.setLocation(locations[locationIx++]);
+        record.setTimePeriod(times[timeIx++]);
+      } else {
+        record.setMood(null);
+        record.setLocation(null);
+        record.setTimePeriod(null);
+      }
       tOp.addRecord(record);
       date.add(Calendar.DAY_OF_MONTH, 1);
     }
@@ -143,7 +176,7 @@ public class RecordOperationsTest {
     date.set(Calendar.MILLISECOND, 0);
 
     ProgressRecord record = tOp.getRecord(date);
-    assertEquals(null, record);
+    assertEquals(0, record.getId());
   }
 
   @Test
@@ -204,5 +237,26 @@ public class RecordOperationsTest {
     date.set(2016, Calendar.APRIL, 1);
     percent = tOp.getMonthVictoriesPercent(date);
     assertEquals(50, percent);
+  }
+
+  @Test
+  public void testGetMostFrequentMood() throws Exception {
+    initDbForStatsTests();
+    ProgressRecord.Mood topMood = tOp.getMostFrequentMood();
+    assertEquals(ProgressRecord.Mood.BORED, topMood);
+  }
+
+  @Test
+  public void testGetMostFrequentLocation() throws Exception {
+    initDbForStatsTests();
+    ProgressRecord.Location topLocation = tOp.getMostFrequentLocation();
+    assertEquals(ProgressRecord.Location.COMPUTER_ROOM, topLocation);
+  }
+
+  @Test
+  public void testGetMostFrequentTime() throws Exception {
+    initDbForStatsTests();
+    ProgressRecord.TimePeriod topTime = tOp.getMostFrequentTime();
+    assertEquals(ProgressRecord.TimePeriod.MORNING, topTime);
   }
 }
