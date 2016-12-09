@@ -11,7 +11,7 @@
     tools:context="com.example.addictionrecoveryprogress.PinActivity">
 
     <TextView
-        android:text="Please enter pin"
+        android:text="Please enter your 4 digit pin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/et_pinEntry"
@@ -20,18 +20,25 @@
         android:id="@+id/tv_pinInstructions" />
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="#ffd33a26"
+        android:padding="5dp"
+        android:textColor="#fff"
+        android:visibility="invisible"
         android:layout_below="@+id/et_pinEntry"
         android:layout_centerHorizontal="true"
-        android:id="@+id/tv_validPinMessage" />
+        android:id="@+id/tv_validPinMessage"
+        android:textAlignment="center"/>
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="numberPassword"
+        android:maxLength="4"
         android:ems="10"
         android:id="@+id/et_pinEntry"
         android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:textAlignment="center"/>
 </RelativeLayout>

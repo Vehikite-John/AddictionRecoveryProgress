@@ -56,21 +56,23 @@ public class PinActivity extends AppCompatActivity {
         @Override
         public void afterTextChanged(Editable editable) {
             String input = editText.getText().toString();
+            String pinString = Integer.toString(pin);
 
-            if (input.length() != 4) {
-                validPinMessage.setText("Please enter a valid pin");
+            // keep error message invisible until pin is entered
+            if (input.length() < 4 && validPinMessage.getVisibility() == View.VISIBLE) {
+                validPinMessage.setVisibility(View.INVISIBLE);
+            }
+
+            // display error if incorrect pin is entered
+            if (input.length() == 4 && !input.equals(pinString)) {
+                validPinMessage.setText("Invalid pin. Please try again.");
                 validPinMessage.setVisibility(View.VISIBLE);
             }
-            else {
-                int inputInt = Integer.parseInt(input);
-                if (inputInt != pin) {
-                    validPinMessage.setText("Invalid pin. Please try again.");
-                    validPinMessage.setVisibility(View.VISIBLE);
-                }
-                if (inputInt == pin) {
-                    Intent i = new Intent(PinActivity.this, DashboardActivity.class);
-                    startActivity(i);
-                }
+
+            // launch Dashboard Activity upon entering a correct pin
+            if (input.equals(pinString)) {
+                Intent i = new Intent(PinActivity.this, DashboardActivity.class);
+                startActivity(i);
             }
         }
     };

@@ -94,9 +94,6 @@ public class SettingsActivity extends AppCompatActivity {
             int confirmPin = Integer.parseInt(et_confirmPin.getText().toString());
 
             if (pin != confirmPin) {
-//                Toast t = Toast.makeText(SettingsActivity.this, "This pin doesn't match the pin entered above. Please reenter pin.",
-//                        Toast.LENGTH_SHORT);
-//                t.show();
                 b_updatePin.setEnabled(false);
             }
             if (pin == confirmPin) {
