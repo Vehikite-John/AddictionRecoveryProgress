@@ -1,77 +1,52 @@
 package com.example.addictionrecoveryprogress;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-public class DashboardActivity extends AppCompatActivity {
+public class TrendsActivity extends AppCompatActivity {
 
     private RecordOperations recordOps;
-    private int longestStreak;
-    private int currentStreak;
-    private int totalVictories;
-    private int totalVictoriesPercent;
-    private int monthVictories;
-    private int monthVictoriesPercent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_dashboard);
+        setContentView(R.layout.activity_trends);
         Toolbar mainToolbar = (Toolbar) findViewById(R.id.main_toolbar);
         setSupportActionBar(mainToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         recordOps = new RecordOperations(this);
 
-        try {
-            recordOps.open();
-            longestStreak = recordOps.getLongestStreak();
-            currentStreak = recordOps.getCurrentStreak();
-            totalVictories = recordOps.getTotalVictories();
-            totalVictoriesPercent = recordOps.getTotalVictoriesPercent();
-            monthVictories = recordOps.getMonthVictories();
-            monthVictoriesPercent = recordOps.getMonthVictoriesPercent();
-            recordOps.close();
-        } catch (Exception ex) {
-            Logger.getLogger(DashboardActivity.class.getName()).log(Level.SEVERE, null, ex);
+        ProgressRecord.Mood commonMood = recordOps.getMostFrequentMood();
+        ProgressRecord.Location commonLocation = recordOps.getMostFrequentLocation();
+        ProgressRecord.TimePeriod commonTime = recordOps.getMostFrequentTime();
+
+        LinearLayout lView = (LinearLayout) findViewById(R.id.trendsLinearlayout);
+
+        if (commonMood == null || commonLocation == null || commonTime == null) {
+            TextView noCommon = new TextView(this);
+            noCommon.setText("No Trends, check back after more data has been submitted");
+            lView.addView(noCommon);
+        } else {
+            TextView commonMoodText = new TextView(this);
+            commonMoodText.setText("Most Common Mood: " + commonMood.toString());
+            lView.addView(commonMoodText);
+
+            TextView commonLocationText = new TextView(this);
+            commonLocationText.setText("Most Common Location: " + commonLocation.toString());
+            lView.addView(commonLocationText);
+
+            TextView commonTimeText = new TextView(this);
+            commonTimeText.setText("Most Common Time: " + commonTime.toString());
+            lView.addView(commonTimeText);
         }
-
-        LinearLayout lView = (LinearLayout) findViewById(R.id.statisticsLinearlayout);
-
-        TextView totalVictoriesText = new TextView(this);
-        totalVictoriesText.setText("Total Victories: " + totalVictories);
-        lView.addView(totalVictoriesText);
-
-        TextView totalVictoriesPercentText = new TextView(this);
-        totalVictoriesPercentText.setText("Total Victories Percent: " + totalVictoriesPercent);
-        lView.addView(totalVictoriesPercentText);
-
-        TextView monthVictoriesText = new TextView(this);
-        monthVictoriesText.setText("Month Victories: " + monthVictories);
-        lView.addView(monthVictoriesText);
-
-        TextView monthVictoriesPercentText = new TextView(this);
-        monthVictoriesPercentText.setText("Month Victories Percent: " + monthVictoriesPercent);
-        lView.addView(monthVictoriesPercentText);
-
-        TextView longestStreakText = new TextView(this);
-        longestStreakText.setText("Longest Streak: " + longestStreak);
-        lView.addView(longestStreakText);
-
-        TextView currentSreakText = new TextView(this);
-        currentSreakText.setText("Current Streak: " + currentStreak);
-        lView.addView(currentSreakText);
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

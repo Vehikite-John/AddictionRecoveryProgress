@@ -7,18 +7,24 @@
         android:id="@+id/action_home"
         android:icon="@drawable/ic_home"
         android:title="@string/action_home"
-        app:showAsAction="ifRoom|withText"/>
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/action_trends"
+        android:icon="@drawable/ic_trends"
+        android:title="@string/action_trends"
+        app:showAsAction="always" />
 
     <item
         android:id="@+id/action_add"
         android:icon="@drawable/ic_add"
         android:title="@string/action_add"
-        app:showAsAction="ifRoom|withText" />
+        app:showAsAction="always" />
 
     <item
         android:id="@+id/action_settings"
         android:icon="@drawable/ic_settings"
         android:title="@string/action_settings"
-        app:showAsAction="ifRoom|withText" />
+        app:showAsAction="always" />
 
 </menu>

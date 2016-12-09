@@ -291,6 +291,12 @@ public class AddRecordActivity extends AppCompatActivity {
                 startActivity(intent);
                 return true;
 
+            case R.id.action_trends:
+                // User chose the "home" item, show the app home UI...
+                intent = new Intent(this, TrendsActivity.class);
+                startActivity(intent);
+                return true;
+
             case R.id.action_add:
                 // User chose the "home" item, show the app home UI...
                 intent = new Intent(this, AddRecordActivity.class);
