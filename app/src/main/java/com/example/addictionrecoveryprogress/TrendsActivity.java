@@ -1,8 +1,8 @@
 package com.example.addictionrecoveryprogress;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,10 +22,13 @@ public class TrendsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         recordOps = new RecordOperations(this);
+        recordOps.open();
 
         ProgressRecord.Mood commonMood = recordOps.getMostFrequentMood();
         ProgressRecord.Location commonLocation = recordOps.getMostFrequentLocation();
         ProgressRecord.TimePeriod commonTime = recordOps.getMostFrequentTime();
+
+        recordOps.close();
 
         LinearLayout lView = (LinearLayout) findViewById(R.id.trendsLinearlayout);
 
