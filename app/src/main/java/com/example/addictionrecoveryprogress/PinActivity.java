@@ -28,6 +28,18 @@ public class PinActivity extends AppCompatActivity {
         editText = (EditText) findViewById(R.id.et_pinEntry);
         editText.addTextChangedListener(pinWatcher);
         validPinMessage = (TextView) findViewById(R.id.tv_validPinMessage);
+
+        // get SharedPreferences from file named MyPrefsFile
+        sp = getSharedPreferences(PREFS_NAME, 0);
+        // set pin to savedPin if SharedPreferences exists
+        // if not, set pin to 1111
+        pin = sp.getInt("savedPin", 1111);
+
+        // attempt to bypass pin if not set (meaning if set to 1111
+        if (pin == 1111) {
+            Intent i = new Intent(PinActivity.this, DashboardActivity.class);
+            startActivity(i);
+        }
     }
 
     private final TextWatcher pinWatcher = new TextWatcher() {
@@ -50,11 +62,6 @@ public class PinActivity extends AppCompatActivity {
                 validPinMessage.setVisibility(View.VISIBLE);
             }
             else {
-                // get SharedPreferences from file named MyPrefsFile
-                sp = getSharedPreferences(PREFS_NAME, 0);
-                // set pin to savedPin if SharedPreferences exists
-                // if not, set pin to 1111
-                pin = sp.getInt("savedPin", 1111);
                 int inputInt = Integer.parseInt(input);
                 if (inputInt != pin) {
                     validPinMessage.setText("Invalid pin. Please try again.");
