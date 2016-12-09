@@ -10,16 +10,6 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.addictionrecoveryprogress.PinActivity">
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="numberPassword"
-        android:ems="10"
-        android:layout_centerVertical="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="55dp"
-        android:id="@+id/et_pinEntry" />
-
     <TextView
         android:text="Please enter pin"
         android:layout_width="wrap_content"
@@ -35,4 +25,13 @@
         android:layout_below="@+id/et_pinEntry"
         android:layout_centerHorizontal="true"
         android:id="@+id/tv_validPinMessage" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="numberPassword"
+        android:ems="10"
+        android:id="@+id/et_pinEntry"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
 </RelativeLayout>

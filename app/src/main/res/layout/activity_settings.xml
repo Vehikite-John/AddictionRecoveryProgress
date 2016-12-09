@@ -16,4 +16,38 @@
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
+    <TextView
+        android:text="Update pin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_updatePin" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="numberPassword"
+        android:ems="10"
+        android:id="@+id/et_newPin"
+        android:hint="Ex: 1234" />
+
+    <TextView
+        android:text="Confirm new pin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_confirmPin" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="numberPassword"
+        android:ems="10"
+        android:id="@+id/et_confirmPin"
+        android:hint="Ex: 1234" />
+
+    <Button
+        android:text="Update pin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/b_updatePin" />
+
 </LinearLayout>
