@@ -12,11 +12,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class SettingsActivity extends AppCompatActivity {
     EditText et_newPin;
     EditText et_confirmPin;
     Button b_updatePin;
+    TextView tv_settingsPinError;
+    SharedPreferences sp;
 
     // SharedPreferences will be saved in a file named MyPrefsFile
     public static final String PREFS_NAME = "MyPrefsFile";
@@ -28,11 +32,28 @@ public class SettingsActivity extends AppCompatActivity {
         Toolbar mainToolbar = (Toolbar) findViewById(R.id.main_toolbar);
         setSupportActionBar(mainToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+        tv_settingsPinError = (TextView) findViewById(R.id.tv_settingsPinError);
         et_newPin = (EditText) findViewById(R.id.et_newPin);
         et_confirmPin = (EditText) findViewById(R.id.et_confirmPin);
         et_confirmPin.addTextChangedListener(pinWatcher);
         b_updatePin = (Button) findViewById(R.id.b_updatePin);
         b_updatePin.setEnabled(false);
+
+        b_updatePin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // save int to SharedPreferences
+                int pinInt = Integer.parseInt(et_newPin.getText().toString());
+                sp = getSharedPreferences(PREFS_NAME, 0);
+                SharedPreferences.Editor editor = sp.edit();
+                editor.putInt("savedPin", pinInt);
+                editor.commit();
+                Toast t = Toast.makeText(SettingsActivity.this, "Pin updated.", Toast.LENGTH_SHORT);
+                t.show();
+                Intent i = new Intent(SettingsActivity.this, DashboardActivity.class);
+                startActivity(i);
+            }
+        });
     }
 
     @Override
@@ -90,24 +111,22 @@ public class SettingsActivity extends AppCompatActivity {
 
         @Override
         public void afterTextChanged(Editable editable) {
-            int pin = Integer.parseInt(et_newPin.getText().toString());
-            int confirmPin = Integer.parseInt(et_confirmPin.getText().toString());
+            String pin = et_newPin.getText().toString();
+            String confirmPin = et_confirmPin.getText().toString();
 
-            if (pin != confirmPin) {
+            if (confirmPin.length() < 4 && tv_settingsPinError.getVisibility() == View.VISIBLE) {
+                tv_settingsPinError.setVisibility(View.INVISIBLE);
+            }
+
+            if (confirmPin.length() == 4 && !confirmPin.equals(pin)) {
+                // display error if incorrect pin is entered
+                tv_settingsPinError.setVisibility(View.VISIBLE);
                 b_updatePin.setEnabled(false);
             }
-            if (pin == confirmPin) {
+            if (confirmPin.equals(pin)) {
+                int pinInt = Integer.parseInt(pin);
                 b_updatePin.setEnabled(true);
-                // Code to save int to SharedPreferences
-                SharedPreferences sp = getSharedPreferences(PREFS_NAME, 0);
-                SharedPreferences.Editor editor = sp.edit();
-                editor.putInt("savedPin", pin);
-                editor.commit();
             }
         }
     };
-
-    public void saveNumber(View view) {
-
-    }
 }
