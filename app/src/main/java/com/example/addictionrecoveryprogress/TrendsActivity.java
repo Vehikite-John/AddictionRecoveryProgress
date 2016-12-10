@@ -34,18 +34,26 @@ public class TrendsActivity extends AppCompatActivity {
 
         if (commonMood == null || commonLocation == null || commonTime == null) {
             TextView noCommon = new TextView(this);
+            noCommon.setPadding(40, 40, 40, 40);
+            noCommon.setTextSize(16);
             noCommon.setText("No Trends, check back after more data has been submitted");
             lView.addView(noCommon);
         } else {
             TextView commonMoodText = new TextView(this);
+            commonMoodText.setPadding(40, 40, 40, 40);
+            commonMoodText.setTextSize(16);
             commonMoodText.setText("Most Common Mood: " + commonMood.toString());
             lView.addView(commonMoodText);
 
             TextView commonLocationText = new TextView(this);
+            commonLocationText.setPadding(40, 40, 40, 40);
+            commonLocationText.setTextSize(16);
             commonLocationText.setText("Most Common Location: " + commonLocation.toString());
             lView.addView(commonLocationText);
 
             TextView commonTimeText = new TextView(this);
+            commonTimeText.setPadding(40, 40, 40, 40);
+            commonTimeText.setTextSize(16);
             commonTimeText.setText("Most Common Time: " + commonTime.toString());
             lView.addView(commonTimeText);
         }

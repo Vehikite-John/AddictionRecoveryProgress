@@ -48,26 +48,38 @@ public class DashboardActivity extends AppCompatActivity {
         LinearLayout lView = (LinearLayout) findViewById(R.id.statisticsLinearlayout);
 
         TextView totalVictoriesText = new TextView(this);
+        totalVictoriesText.setPadding(40, 40, 40, 40);
+        totalVictoriesText.setTextSize(16);
         totalVictoriesText.setText("Total Victories: " + totalVictories);
         lView.addView(totalVictoriesText);
 
         TextView totalVictoriesPercentText = new TextView(this);
+        totalVictoriesPercentText.setPadding(40, 40, 40, 40);
+        totalVictoriesPercentText.setTextSize(16);
         totalVictoriesPercentText.setText("Total Victories Percent: " + totalVictoriesPercent);
         lView.addView(totalVictoriesPercentText);
 
         TextView monthVictoriesText = new TextView(this);
+        monthVictoriesText.setPadding(40, 40, 40, 40);
+        monthVictoriesText.setTextSize(16);
         monthVictoriesText.setText("Month Victories: " + monthVictories);
         lView.addView(monthVictoriesText);
 
         TextView monthVictoriesPercentText = new TextView(this);
+        monthVictoriesPercentText.setPadding(40, 40, 40, 40);
+        monthVictoriesPercentText.setTextSize(16);
         monthVictoriesPercentText.setText("Month Victories Percent: " + monthVictoriesPercent);
         lView.addView(monthVictoriesPercentText);
 
         TextView longestStreakText = new TextView(this);
+        longestStreakText.setPadding(40, 40, 40, 40);
+        longestStreakText.setTextSize(16);
         longestStreakText.setText("Longest Streak: " + longestStreak);
         lView.addView(longestStreakText);
 
         TextView currentSreakText = new TextView(this);
+        currentSreakText.setPadding(40, 40, 40, 40);
+        currentSreakText.setTextSize(16);
         currentSreakText.setText("Current Streak: " + currentStreak);
         lView.addView(currentSreakText);
     }
