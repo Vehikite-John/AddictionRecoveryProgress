@@ -197,7 +197,7 @@ public class AddRecordActivity extends AppCompatActivity {
     public void restoreRecord(ProgressRecord record) {
         // update Button text to Update
         addUpdateButton.setText("Update");
-        Toast t = Toast.makeText(AddRecordActivity.this, "Record for this date exists. Record restored.", Toast.LENGTH_SHORT);
+        Toast t = Toast.makeText(AddRecordActivity.this, "Record for this date exists. Record restored.", Toast.LENGTH_LONG);
         t.show();
 
         // set newRecord = record
